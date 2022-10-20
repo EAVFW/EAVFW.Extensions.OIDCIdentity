@@ -1,0 +1,1062 @@
+{
+	"variables": {
+		"LogoutSection": {
+			"tab": "TAB_General",
+			"column": "COLUMN_Second",
+			"section": "Section_Logout"
+		},
+		"TokenSection": {
+			"tab": "TAB_General",
+			"column": "COLUMN_Second",
+			"section": "Section_Tokens"
+		},
+		"LoginSection": {
+			"tab": "TAB_General",
+			"column": "COLUMN_Second",
+			"section": "Section_Logins"
+		},
+		"Miscellaneous": {
+			"tab": "TAB_Miscellaneous",
+			"column": "COLUMN_First",
+			"section": "Section_Miscellaneous"
+		},
+		"PrimaryInformation_Description": {
+			"tab": "TAB_General",
+			"column": "COLUMN_First",
+			"section": "Section_General",
+			"control": "RichTextEditorControl"
+		},
+		"LifetimeSection": {
+			"tab": "TAB_General",
+			"column": "COLUMN_Second",
+			"section": "Section_Lifetimes"
+		},
+		"LifetimeSection_TimespanControl": {
+			"tab": "TAB_General",
+			"column": "COLUMN_First",
+			"section": "Section_General",
+			"control": "@eavfw/TimespanControl"
+		},
+		"Miscellaneous_Properties": {
+			"tab": "TAB_Miscellaneous",
+			"column": "COLUMN_First",
+			"section": "Section_Miscellaneous",
+			"showCellLabel": false
+		},
+		"sitemaps": {
+			"OpenIdConnect": {
+				"app": "Kjeldager CRM",
+				"area": "OpenId Connect",
+				"group": "OpenId Connect"
+			}
+		}
+	},
+	"entities": {
+		"OpenId Connect Client": {
+			"pluralName": "OpenId Connect Clients",
+			"description": "Models an OpenId Connect or OAuth2 client",
+			"TPT": "Identity",
+			"sitemap": {
+				"[merge()]": "[variables('sitemaps').OpenIdConnect]",
+				"title": "Clients"
+			},
+			"keys": {
+				"Client Id": [ "Client Id" ]
+			},
+			"forms": {
+				"Main Information": {
+					"type": "Main",
+					"name": "Main Information",
+					"layout": {
+						"tabs": {
+							"TAB_General": {
+								"title": "General Information",
+								"locale": {
+									"1030": { "title": "General Information" }
+								},
+								"columns": {
+									"COLUMN_First": {
+										"sections": {
+											"SECTION_General": {},
+											"SECTION_Logins": {}
+										}
+									},
+									"COLUMN_Second": {
+										"sections": {
+											"SECTION_Additional": {},
+											"SECTION_Logout": {},
+											"SECTION_Lifetimes": {},
+											"SECTION_Tokens": {}
+										}
+									}
+								}
+							},
+							"TAB_Miscellaneous": {
+								"title": "Miscellaneous",
+								"locale": {
+									"1030": { "title": "Andet" }
+								},
+								"columns": {
+									"COLUMN_First": {
+										"sections": {
+											"SECTION_Miscellaneous": {}
+										}
+									}
+								}
+							},
+							"TAB_Administrative": "[variables('TAB_Administrative')]",
+							"TAB_Secrets": {
+								"title": "Secrets",
+								"locale": { "1030": { "title": "Nøgler" } },
+								"columns": "[variables('layouts').OneColumnTemplate]"
+							},
+							"TAB_SecurityRoles": {
+								"title": "Security Roles",
+								"locale": {
+									"1030": { "title": "Sikkerhedsroller" }
+								},
+								"columns": "[variables('layouts').OneColumnTemplate]"
+							},
+							"TAB_SecurityGroups": {
+								"title": "Security Groups",
+								"locale": {
+									"1030": { "title": "Sikkerhedsgrupper" }
+								},
+								"columns": "[variables('layouts').OneColumnTemplate]"
+							}
+						}
+					},
+					"columns": {
+						"Client Id": "[variables('PrimaryInformation')]",
+						"Name": "[variables('PrimaryInformation')]",
+						"Type": "[variables('PrimaryInformation')]",
+						"Description": "[variables('PrimaryInformation_Description')]",
+						"Client Uri": "[variables('PrimaryInformation')]",
+						"Logo Uri": "[variables('PrimaryInformation')]",
+						"Protocol Type": "[variables('PrimaryInformation')]",
+						"Require Client Secret": "[variables('PrimaryInformation')]",
+						"Require Consent": "[variables('PrimaryInformation')]",
+						"Allow Remember Consent": "[variables('PrimaryInformation')]",
+						"Allowed Grant Types": "[variables('PrimaryInformation')]",
+						"Require PKCE": "[variables('PrimaryInformation')]",
+						"Allow Plain Text PKCE": "[variables('PrimaryInformation')]",
+						"Post Logout Redirect URIs": {
+							"[merge()]": "[variables('LogoutSection')]",
+							"showCellLabel": false,
+							"control": "ka_Kjeldager.Controls.SimpleListControl.SimpleListControl",
+							"parameters": {
+								"textField": "[concat(customizationprefix(),'_',toLogicalName(propertyName(parent(parent()))))]",
+								"jsonSchema": {
+									"type": "Multiple",
+									"static": true,
+									"value": {
+										"$schema": "http://json-schema.org/draft-04/schema#",
+										"type": "array",
+										"x-label": "Post Logout Redirect URIs",
+										"x-description": "Specifies allowed URIs to redirect to after logout",
+										"x-add-label": "Add URI",
+										"items": {
+											"type": "string",
+											"format": "uri",
+											"x-aria-label": "Redirect URI",
+											"x-label": "Redirect URI",
+											"x-placeholder": "Redirect URI",
+											"x-help-text": "Specifies allowed URIs to return tokens or authorization codes to"
+										}
+									}
+								}
+							}
+						},
+						"Front Channel Logout URI": "[variables('LogoutSection')]",
+						"Front Channel Logout Session Required": "[variables('LogoutSection')]",
+						"Back Channel Logout URI": "[variables('LogoutSection')]",
+						"Back Channel Logout Session Required": "[variables('LogoutSection')]",
+						"Identity Token Lifetime": "[variables('LifetimeSection_TimespanControl')]",
+						"Access Token Lifetime": "[variables('LifetimeSection_TimespanControl')]",
+						"Authorization Code Lifetime": "[variables('LifetimeSection_TimespanControl')]",
+						"Absolute Refresh Token Lifetime": "[variables('LifetimeSection_TimespanControl')]",
+						"Sliding Refresh Token Lifetime": "[variables('LifetimeSection_TimespanControl')]",
+						"Consent Lifetime": "[variables('LifetimeSection_TimespanControl')]",
+						"User SSO Lifetime": "[variables('LifetimeSection_TimespanControl')]",
+						"Device Code Lifetime": "[variables('LifetimeSection_TimespanControl')]",
+						"Refresh Token Expiration": "[variables('LifetimeSection')]",
+						"Allow Access Tokens Via Browser": "[variables('TokenSection')]",
+						"Refresh Token Usage": "[variables('TokenSection')]",
+						"Access Token Type": "[variables('TokenSection')]",
+						"Include JWT Id": "[variables('TokenSection')]",
+						"Always Include User Claims In Id Token": "[variables('TokenSection')]",
+						"Claims": {
+							"[merge()]": "[variables('TokenSection')]",
+							"showCellLabel": false,
+							"control": "ka_Kjeldager.Controls.SimpleListControl.SimpleListControl",
+							"parameters": {
+								"textField": "[concat(customizationprefix(),'_',toLogicalName(propertyName(parent(parent()))))]",
+								"jsonSchema": {
+									"type": "Multiple",
+									"static": true,
+									"value": {
+										"$schema": "http://json-schema.org/draft-04/schema#",
+										"type": "array",
+										"x-label": "Claims",
+										"x-description": "Specifies claims that is included in the access token for the client",
+										"x-add-label": "Add claim",
+										"items": {
+											"type": "object",
+											"properties": {
+												"type": {
+													"type": "string",
+													"x-label": "Claim Type",
+													"x-aria-label": "Claim Type",
+													"x-placeholder": "Claim type"
+												},
+												"value": {
+													"type": "string",
+													"x-label": "Claim Value",
+													"x-aria-label": "Claim Value",
+													"x-placeholder": "Claim value"
+												}
+											},
+											"x-aria-label": "Claims",
+											"x-label": "Claims",
+											"x-help-text": "Specifies claims that is included in the access token for the client"
+										}
+									}
+								}
+							}
+						},
+						"Always Send Client Claims": "[variables('TokenSection')]",
+						"Client CLaims Prefix": "[variables('TokenSection')]",
+						"Update Access Token Claims On Refresh": "[variables('TokenSection')]",
+						//"Allowed Identity Token Signing Algorithms": "[variables('TokenSection')]",
+						"Enable Local Login": "[variables('LoginSection')]",
+						"Identity Provider Restrictions": "[variables('LoginSection')]",
+						"Pair Wise Subject Salt": "[variables('LoginSection')]",
+						"Allow Offline Access": "[variables('LoginSection')]",
+						"Redirect Uris": {
+							"[merge()]": "[variables('LoginSection')]",
+							"showCellLabel": false,
+							"control": "ka_Kjeldager.Controls.SimpleListControl.SimpleListControl",
+							"parameters": {
+								"textField": "[concat(customizationprefix(),'_',toLogicalName(propertyName(parent(parent()))))]",
+								"jsonSchema": {
+									"type": "Multiple",
+									"static": true,
+									"value": {
+										"$schema": "http://json-schema.org/draft-04/schema#",
+										"type": "array",
+										"x-label": "Redirect URIs",
+										"x-description": "The URIs we will accept as destinations when returning authentication responses (tokens) after successfully authenticating users. Also referred to as reply URLs.",
+										"x-add-label": "Add URI",
+										"items": {
+											"type": "string",
+											"format": "uri",
+											"x-aria-label": "Redirect URI",
+											"x-label": "Redirect URI",
+											"x-placeholder": "Redirect URI",
+											"x-help-text": "Specifies allowed URIs to return tokens or authorization codes to"
+										}
+									}
+								}
+							}
+						},
+						"User Code Type": "[variables('Miscellaneous')]",
+						"Allowed CORS Origins": {
+							"[merge()]": "[variables('Miscellaneous')]",
+							"showCellLabel": false,
+							"control": "ka_Kjeldager.Controls.SimpleListControl.SimpleListControl",
+							"parameters": {
+								"textField": "[concat(customizationprefix(),'_',toLogicalName(propertyName(parent(parent()))))]",
+								"jsonSchema": {
+									"type": "Multiple",
+									"static": true,
+									"value": {
+										"$schema": "http://json-schema.org/draft-04/schema#",
+										"type": "array",
+										"x-label": "Allowed CORS Origins",
+										"x-description": "Specifies the allowed CORS origins for JavaScript clients",
+										"x-add-label": "Add Origin",
+										"items": {
+											"type": "string",
+											"format": "uri",
+											"x-aria-label": "Origin",
+											"x-label": "Origin",
+											"x-placeholder": "Origin",
+											"x-help-text": "Specifies the allowed CORS origins for JavaScript clients"
+										}
+									}
+								}
+							}
+						},
+						"Properties": "[variables('Miscellaneous_Properties')]",
+						"Allowed Scopes": "[variables('Miscellaneous')]",
+						"Require Request Object": "[variables('Miscellaneous')]",
+						"Created On": "[variables('Administrative')]",
+						"Created By": "[variables('Administrative')]",
+						"Modified On": "[variables('Administrative')]",
+						"Modified By": "[variables('Administrative')]",
+						"Owner": "[variables('Administrative')]"
+					}
+				}
+			},
+			"views": {
+				"[concat('Active ', entity().pluralName)]": {
+					"columns": {
+						"Client Id": {},
+						"Name": {},
+						"Client Uri": {},
+						"Status Reason": {},
+						"Require Consent": {}
+					}
+				}
+			},
+			"attributes": {
+				"Description": {
+					"type": "MultilineText",
+					"description": "The description of the client"
+				},
+				"Client Uri": {
+					"type": {
+						"type": "Text",
+						"format": "Url"
+					},
+					"description": "URI to further information about the client (used on consent screen)"
+				},
+				"Logo Uri": {
+					"type": {
+						"type": "Text",
+						"format": "Url"
+					},
+					"description": "URI to client logo (used on consent screen)"
+				},
+				"Require Consent": {
+					"type": "boolean",
+					"description": "Specifies whether a consent screen is required"
+				},
+				"Allow Remember Consent": {
+					"type": "boolean",
+					"description": "Specifies whether user can choose to store consent decisions",
+					"default": true
+				},
+				"Enable Local Login": {
+					"type": "boolean",
+					"description": "Specifies if local login is enabled for this client",
+					"default": true
+				},
+				"Allowed Grant Types": {
+					"description": "Specifies the allowed grant types (legal combinations of AuthorizationCode, Implicit, Hybrid, ResourceOWner, ClientCredentials)",
+					"type": {
+						"name": "Allowed Grant Type",
+						"pluralName": "Allowed Grant Types",
+						"type": "Choices",
+						"options": {
+							"Authorization Code": 1,
+							"Implicit": 2,
+							"Resource Owner": 3,
+							"Client Credentials": 4,
+							"Hybrid": 5,
+							"Device Flow": 6,
+							"Refresh Token": 7
+						}
+					}
+				},
+				"Identity Provider Restrictions": {
+					"type": "MultilineText",
+					"description": "Specifies which external IdPs can be used with this client"
+				},
+				"Allow Offline Access": {
+					"type": "boolean"
+				},
+				"Pair Wise Subject Salt": {
+					"type": "Text",
+					"description": "Specifies a salt value used in pair-wise subjectId generation for users of this client"
+				},
+				"Require PKCE": {
+					"type": "boolean",
+					"description": "Specifies whether a proof key is required for authorization code based token requests",
+					"default": true
+				},
+				"Allow Plain Text PKCE": {
+					"type": "boolean",
+					"description": "Specifies whether a proof key can be sent using plain method (not recommended)"
+				},
+				"Require Request Object": {
+					"type": "boolean",
+					"description": "Specifies whether the client must use a request object on authorization requests"
+				},
+				"Allow Access Tokens Via Browser": {
+					"type": "boolean",
+					"description": "Controls whether accesss tokens are transmitted via the browser for this client. This can prevent accidential leakage of access tokens when multiple resposne types are allowed."
+				},
+				"Status": {
+					"description": "Specifies if the client is enabled",
+					"default": 2,
+					"type": {
+						"type": "Choice",
+						"name": "OpenId Connect Client Status",
+						"options": {
+							"Inactive": 0,
+							"Enabled": 1,
+							"Draft": 2
+						}
+					}
+				},
+				"Protocol Type": {
+					"description": "The protocol type",
+					"default": 0,
+					"type": {
+						"type": "Choice",
+						"name": "Protocol Types",
+						"options": {
+							"OpenIdConnect": 0
+						}
+					}
+				},
+				"Require Client Secret": {
+					"type": "boolean",
+					"description": "If set to false, no client secret is needed to request tokens at the token endpoint",
+					"default": true
+				},
+				"Client Id": {
+					"type": "Text",
+					"description": "Unique ID of the client",
+					"required": true
+				},
+				"Client Secret": {
+					"type": "Text",
+					"description": "Unique ID of the client",
+					"required": true
+				},
+				"Consent Type": {
+					"type": {
+						"type": "Choice",
+						"name": "OpenId Connect Client Consent Types",
+						"options": {
+							"Explicit ": 0,
+							"External": 1,
+							"Implicit": 2,
+							"Systematic": 3
+						}
+					}
+				},
+				"Type": {
+					"type": {
+						"type": "Choice",
+						"required": true,
+						"name": "OpenId Connect Client Types",
+						"options": {
+							"Confidential": 0,
+							"Public": 1
+						}
+					}
+				},
+				"Redirect Uris": {
+					"type": "MultilineText",
+					"description": "Specifies allowed URIs to return tokens or authorization codes to"
+				},
+				"Post Logout Redirect URIs": {
+					"type": "MultilineText",
+					"description": "Specifies allowed URIs to redirect to after logout"
+				},
+				"Front Channel Logout URI": {
+					"type": {
+						"type": "Text",
+						"format": "Url"
+					},
+					"description": "Specifies logout URI at client for HTTP front-channel based logout"
+				},
+				"Include JWT Id": {
+					"type": "boolean",
+					"description": "Specifies if JWT access token should include an identifier",
+					"default": true
+				},
+				"Claims": {
+					"type": "MultilineText",
+					"description": "Specifies claims that is included in the access token for the client"
+				},
+				"Always Send Client Claims": {
+					"type": "boolean",
+					"description": "Specifies if Client Claims always should be included in accesss token, or only for client credentials flow"
+				},
+				"Client CLaims Prefix": {
+					"type": "Text",
+					"default": "client_",
+					"description": "Specifies a value to prefix client claim types"
+				},
+				"User SSO Lifetime": {
+					"description": "The maximum duration (in seconds) since the last time the user authenticated (defaults no expiration)",
+					"type": "integer"
+				},
+				"User Code Type": {
+					"type": "Text",
+					"description": "Specifies the type of device flow user code"
+				},
+				"Device Code Lifetime": {
+					"type": "integer",
+					"description": "The device code lifetime",
+					"default": 300
+				},
+				"Allowed CORS Origins": {
+					"type": "MultilineText",
+					"description": "Specifies the allowed CORS origins for JavaScript clients"
+				},
+				"Front Channel Logout Session Required": {
+					"type": "boolean",
+					"default": true,
+					"description": "Specifies if the users sessions id should be sent to FrontChannelLogoutUri"
+				},
+				"Back Channel Logout URI": {
+					"type": {
+						"type": "Text",
+						"format": "Url"
+					},
+					"description": "Specifies logout URI at client for HTTP back-channel based logout."
+				},
+				"Back Channel Logout Session Required": {
+					"type": "boolean",
+					"description": "Specifies if the users sessions id should be sent to BackChannelLogoutUri",
+					"default": true
+				},
+				"Allowed Scopes": {
+					"type": "MultilineText",
+					"description": "Specifies the API scopes that the client is allowed to request, if empty, the client cant access any scopes"
+				},
+				"Always Include User Claims In Id Token": {
+					"type": "boolean",
+					"description": "When requesting both an id token and access token, should the user claims always be added to the id token instead of requiring the client to use the userinfo endpoint"
+				},
+				"Identity Token Lifetime": {
+					"type": "integer",
+					"description": "Lifetime of the identity token in seconds",
+					"default": 300
+				},
+				"Allowed Identity Token Signing Algorithms": {
+					"type": {
+						"type": "Choices",
+						"name": "Allowed Identity Token Signing Algorithm",
+						"pluralName": "Allowed Identity Token Signing Algorithm",
+						"options": {
+							"ES256": 1
+						}
+					}
+				},
+				"Access Token Lifetime": {
+					"type": "integer",
+					"default": 3600,
+					"description": "Lifetime of access token in seconds"
+				},
+				"Authorization Code Lifetime": {
+					"type": "integer",
+					"description": "Lifetime of authorization code in secords",
+					"default": 300
+				},
+				"Absolute Refresh Token Lifetime": {
+					"type": "integer",
+					"description": "Maximum lifetime of a refresh token in secords",
+					"default": 2419200
+				},
+				"Sliding Refresh Token Lifetime": {
+					"type": "integer",
+					"description": "Sliding lifetime of a refresh token in secords",
+					"default": 1209600
+				},
+				"Consent Lifetime": {
+					"type": "integer",
+					"description": "Lifetime of a user consent in seconds (defaults no expiration)"
+				},
+				"Refresh Token Usage": {
+					"type": {
+						"name": "Refresh Token Usage Types",
+						"type": "Choice",
+						"options": {
+							"Re Use": 0,
+							"One Time": 1
+						}
+					},
+					"default": 0,
+					"description": "Specify if the refresh handle will be updated when refreshing tokens"
+				},
+				"Update Access Token Claims On Refresh": {
+					"type": "boolean",
+					"description": "Specifies if access token and claims should be updated on a refresh token request"
+				},
+				"Refresh Token Expiration": {
+					"type": {
+						"type": "Choice",
+						"name": "Refresh Token Expiration Types",
+						"options": {
+							"Absolute": 1,
+							"Sliding": 0
+						}
+					},
+					"description": "Specifies if using absolute expiration or sliding expiration",
+					"default": 1
+				},
+				"Access Token Type": {
+					"type": {
+						"name": "Access Token Types",
+						"type": "Choice",
+						"options": {
+							"JWT": 0,
+							"Reference": 1
+						}
+					},
+					"description": "Specifies wheter the access token is a reference token or a self contained JWT token",
+					"default": 0
+				},
+				"Properties": {
+					"type": "MultilineText",
+					"description": "Specifies custom properties for the client"
+				}
+			}
+		},
+		"OpenId Connect Secret": {
+			"pluralName": "OpenId Connect Secrets",
+			"description": "Models a client secret with identifier and expiration",
+			"keys": {
+				"IX_APISecret": [ "Api", "Value" ],
+				"IX_ClientSecret": [ "Client", "Value" ]
+			},
+			"attributes": {
+				"Description": {
+					"isPrimaryField": true,
+					"type": {
+						"type": "Text",
+						"maxLength": 255
+					}
+				},
+				"Value": {
+					"type": "Text",
+					"description": "The value",
+					"required": true
+				},
+				"Value Hint": {
+					"description": "The hint for UI",
+					"type": "Text"
+				},
+				"Expiration": {
+					"type": "DateTime",
+					"description": "The expiration"
+				},
+				"Secret Type Code": {
+					"description": "The type of the secret",
+					"type": {
+						"type": "Choice",
+						"name": "OpenId Connect Secret Type Codes",
+						"options": {
+							"Shared Secret": 0,
+							"X509 Certificate Thumbprint": 1,
+							"X509 Certificate Name": 2,
+							"X509 Certificate Base65": 3,
+							"Json Web Key": 4
+						}
+					}
+				},
+				//"Association Type Code": {
+				//  "description": "specifies whether the secret belongs to a API or a Client",
+				//  "type": {
+				//    "type": "Choice",
+				//    "name": "OpenId Connect Secret Association Type Codes",
+				//    "options": {
+				//      "Client": 0,
+				//      "API": 1
+				//    }
+				//  }
+				//},
+				"Api": {
+					"description": "The API Resource that this secret belongs to",
+					"type": {
+						"type": "lookup",
+						"referenceType": "OpenId Connect API Resource",
+						"behavior": "referential",
+						"cascade": { "delete": "restrict" },
+						"forms": {
+							"Main Information": {
+								"name": "Main Information",
+								"form": "main",
+								"tab": "TAB_Secrets",
+								"tabOrder": 1,
+								"column": "COLUMN_First",
+								"section": "SECTION_Secrets",
+								"view": "[concat('Active ', entity().pluralName)]"
+							}
+						}
+					}
+				},
+				"Client": {
+					"description": "The OAuth Client that this secret belongs to",
+					"type": {
+						"type": "lookup",
+						"referenceType": "OpenId Connect Client",
+						"behavior": "referential",
+						"cascade": { "delete": "restrict" },
+						"forms": {
+							"Main Information": {
+								"type": "Main",
+								"name": "Main Information",
+								"tab": "TAB_Secrets",
+								"column": "COLUMN_First",
+								"section": "SECTION_General",
+								"view": "[concat('Active ', entity().pluralName)]"
+							}
+						}
+					}
+				}
+			}
+		},
+		"OpenId Connect Authorization": {
+			"pluralName": "OpenId Connect Authorizations",
+			"description": "Models an OpenId Connect or OAuth2 Authorization",
+			"sitemap": {
+				"[merge()]": "[variables('sitemaps').OpenIdConnect]",
+				"title": "Authorizations"
+			},
+			"attributes": {
+				"[merge()]": "[variables('audit')]",
+				"Name": {
+					"isPrimaryField": true,
+					"locale": "[variables('translations')[propertyName(attribute())]]"
+				},
+				"Subject": {
+					"type": {
+						"type": "lookup",
+						"referenceType": "Identity",
+						"required": true,
+						"index": { "unique": false }
+					}
+				},
+				"Status": {
+					"type": {
+						"type": "Choice",
+						"name": "OpenId Connect Authorization Status",
+						"required": true,
+						"options": {
+							"Inactive": 0,
+							"Valid": 1,
+							"Redeemed": 2,
+							"Rejected": 3,
+							"Revoked": 4
+						}
+					}
+				},
+				"Type": {
+					"type": {
+						"type": "Choice",
+						"name": "OpenId Connect Authorization Type",
+						"required": true,
+						"options": {
+							"Permanent": 0,
+							"AdHoc": 1
+						}
+					}
+				},
+				"Client": {
+					"type": {
+						"type": "lookup",
+						"referenceType": "OpenId Connect Client",
+						"index": { "unique": false }
+					}
+				},
+				"Properties": {
+					"type": "MultilineText",
+					"description": "Specifies custom properties for the client"
+				}
+			}
+		},
+		"OpenId Connect Token": {
+			"pluralName": "OpenId Connect Tokens",
+			"description": "Models an OpenId Connect or OAuth2 Token",
+			"sitemap": {
+				"[merge()]": "[variables('sitemaps').OpenIdConnect]",
+				"title": "Tokens"
+			},
+			"keys": {
+				"IX_ReferenceId": [ "Reference Id" ]
+			},
+			"attributes": {
+				"[merge()]": "[variables('audit')]",
+				"Name": {
+					"isPrimaryField": true,
+					"locale": "[variables('translations')[propertyName(attribute())]]"
+				},
+				"Client": {
+					"type": {
+						"type": "lookup",
+						"referenceType": "OpenId Connect Client"
+					}
+				},
+				"Authorization": {
+					"type": {
+						"type": "lookup",
+						"referenceType": "OpenId Connect Authorization"
+					}
+				},
+				"Subject": {
+					"type": {
+						"type": "lookup",
+						"referenceType": "Identity",
+						"required": true,
+						"index": { "unique": false }
+					}
+				},
+				"Status": {
+					"type": {
+						"type": "Choice",
+						"name": "OpenId Connect Token Status",
+						"required": true,
+						"options": {
+							"Inactive": 0,
+							"Valid": 1,
+							"Redeemed": 2,
+							"Rejected": 3,
+							"Revoked": 4
+						}
+					}
+				},
+				"Type": {
+					"type": {
+						"type": "Choice",
+						"name": "OpenId Connect Token Type",
+						"required": true,
+						"options": {
+							"Access Token": 0,
+							"Identity Token": 1
+						}
+					}
+				},
+				"Expiration Date": {
+					"type": "DateTime"
+				},
+				"Redemption Date": {
+					"type": "DateTime"
+				},
+				"Payload": {
+					"type": {
+						"type": "MultilineText"
+					}
+				},
+				"Reference Id": {
+					"type": "guid"
+				},
+				"Properties": {
+					"type": "MultilineText",
+					"description": "Specifies custom properties for the client"
+				}
+			}
+		},
+		"OpenId Connect Resource": {
+			"pluralName": "OpenId Connect Resources",
+			"description": "Models API, Identity and Scope Resources of OAuth2 Spec",
+			"abstract": true,
+			"keys": {
+				"IX_Name": [ "Name" ]
+			},
+			"attributes": {
+				"[merge()]": "[variables('audit')]",
+				"Name": {
+					"type": "Text",
+					"description": "The unique name of the resource"
+				},
+				//"Type Code": {
+				//  "description": "Specifies the type of the resource, either identity, API or scope",
+				//  "type": {
+				//    "type": "Choice",
+				//    "name": "OpenId Connect Resource Type Codes",
+				//    "options": {
+				//      "Identity": 0,
+				//      "API": 1,
+				//      "Scope": 2
+				//    }
+				//  }
+				//},
+				"Display Name": {
+					"isPrimaryField": true,
+					"description": "The displayname of the resource"
+				},
+				"Description": {
+					"description": "The description of the resource",
+					"type": {
+						"type": "Text",
+						"maxLength": 255
+					}
+				},
+				"Show In Discovery Document": {
+					"description": "Specifies whether this scope is shown in the discovery document",
+					"type": "boolean",
+					"default": true
+				},
+				"Properties": {
+					"type": "MultilineText",
+					"description": "Specifies custom properties for the client"
+				},
+				//"Required": {
+				//  "description": "Specifies whether the user can de-select the scope on the consent screen",
+				//  "type": "boolean"
+				//},
+				//"Emphasize": {
+				//  "description": "Specifies whether the consent screen will emphasize this scope. Used for sensitive or important scopes",
+				//  "type": "boolean"
+				//},
+				//"Allowed Identity Token Signing Algorithms": {
+				//  "type": {
+				//    "type": "Choices",
+				//    "name": "Allowed Identity Token Signing Algorithms",
+				//    "options": {
+				//      "ES256": {
+				//        "value": 1
+				//      }
+				//    }
+				//  }
+				//},
+				"User Claims": {
+					"description": "List of associated user claims that should be included when this resource is requested",
+					"type": "MultilineText"
+				}
+			}
+		},
+		"OpenId Connect API Resource": {
+			"pluralName": "OpenId Connect API Resources",
+			"TPT": "OpenId Connect Resource",
+			"description": "Models an OpenId Connect or OAuth2 Resource Scope",
+			"sitemap": {
+				"[merge()]": "[variables('sitemaps').OpenIdConnect]",
+				"title": "APIs"
+			},
+			"attributes": {
+				"Required": {
+					"description": "Specifies whether the user can de-select the scope on the consent screen",
+					"type": "boolean"
+				},
+				"Emphasize": {
+					"description": "Specifies whether the consent screen will emphasize this scope. Used for sensitive or important scopes",
+					"type": "boolean"
+				},
+				"Require Resource Indicator": {
+					"description": "Indicates if this API resource requires the resource indicator to resquest it, and expects access tokens issues to it will only ever contain this API resource as the audience.",
+					"type": "boolean"
+				}
+			}
+		},
+		"OpenId Connect Identity Resource": {
+			"pluralName": "OpenId Connect Identity Resources",
+			"TPT": "OpenId Connect Resource",
+			"description": "Models an OpenId Connect or OAuth2 Resource Scope",
+			"sitemap": {
+				"[merge()]": "[variables('sitemaps').OpenIdConnect]",
+				"title": "Identity Scopes"
+			},
+			"data": {
+				"OpenId": {
+					"Name": "openid",
+					"Display Name": "Your user identifier",
+					"Required": true,
+					"Type Code": 0,
+					"Show In Discovery Document": true
+				},
+				"Profile": {
+					"Name": "profile",
+					"Display Name": "User profile",
+					"Description": "Your user profile infomation (first name, last name, etc.)",
+					"Emphasize": true,
+					"Type Code": 0,
+					"Show In Discovery Document": true
+				},
+				"Email": {
+					"Name": "email",
+					"Display Name": "Your email address",
+					"Emphasize": true,
+					"Type Code": 0,
+					"Show In Discovery Document": true
+				},
+				"Phone": {
+					"Name": "phone",
+					"Display Name": "Your phone number",
+					"Emphasize": true,
+					"Type Code": 0,
+					"Show In Discovery Document": true
+				},
+				"Address": {
+					"Name": "address",
+					"Display Name": "Your postal address",
+					"Emphasize": true,
+					"Type Code": 0,
+					"Show In Discovery Document": true
+				}
+			},
+			"attributes": {
+				"Required": {
+					"description": "Specifies whether the user can de-select the scope on the consent screen",
+					"type": "boolean"
+				},
+				"Emphasize": {
+					"description": "Specifies whether the consent screen will emphasize this scope. Used for sensitive or important scopes",
+					"type": "boolean"
+				}
+			}
+		},
+		"OpenId Connect Scope": {
+			"pluralName": "OpenId Connect Scopes",
+			"TPT": "OpenId Connect Resource",
+			"description": "Models an OpenId Connect or OAuth2 Resource Scope",
+			"sitemap": {
+				"[merge()]": "[variables('sitemaps').OpenIdConnect]",
+				"title": "Scopes"
+			},
+			"attributes": {
+				"Required": {
+					"description": "Specifies whether the user can de-select the scope on the consent screen",
+					"type": "boolean"
+				},
+				"Emphasize": {
+					"description": "Specifies whether the consent screen will emphasize this scope. Used for sensitive or important scopes",
+					"type": "boolean"
+				}
+			}
+		},
+		"OpenId Connect Authorization Scope": {
+			"pluralName": "OpenId Connect Authorization Scopes",
+			"keys": {
+				"IX_AuthorizationScope": [ "Authorization", "Scope" ]
+			},
+			"attributes": {
+				"Authorization": {
+					"type": {
+						"type": "lookup",
+						"required": true,
+						"referenceType": "OpenId Connect Authorization"
+					}
+				},
+				"Scope": {
+					"type": {
+						"type": "lookup",
+						"referenceType": "OpenId Connect Identity Resource",
+						"required": true,
+						"index": { "unique": false }
+					}
+				}
+			}
+		},
+		"OpenId Connect Scope Resource": {
+			"pluralName": "OpenId Connect Scope Resources",
+			"keys": {
+				"IX_ScopeResource": [ "Scope", "Resource" ]
+			},
+			"attributes": {
+				"Resource": {
+					"type": {
+						"type": "lookup",
+						"required": true,
+						"index": { "unique": false },
+						"referenceType": "OpenId Connect Resource"
+					}
+				},
+				"Scope": {
+					"type": {
+						"type": "lookup",
+						"referenceType": "OpenId Connect Identity Resource",
+						"required": true
+					}
+				}
+			}
+		}
+	}
+}

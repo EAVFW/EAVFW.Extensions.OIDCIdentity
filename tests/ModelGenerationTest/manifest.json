@@ -1,0 +1,703 @@
+{
+  "entities": {
+    "Identity": {
+      "pluralName": "Identities",
+      "abstract": true,
+      "attributes": {
+        "Name": {
+          "isPrimaryField": true
+        },
+        "[merge()]": "[variables('audit')]"
+      }
+    },
+    "Server": {
+      "pluralName": "Servers",
+      "locale": {
+        "1030": {
+          "pluralName": "Servers",
+          "displayName": "Server"
+        }
+      },
+      "sitemap": "[variables('sitemaps').Administration]",
+      "attributes": {
+        "[merge()]": "[variables('audit')]",
+        "Name": {
+          "isPrimaryField": true
+        },
+        "Heartbeat": {
+          "type": "DateTime"
+        }
+      }
+    },
+    "Environment Variable": {
+      "pluralName": "Environment Variables",
+      "locale": {
+        "1030": {
+          "pluralName": "Miljø Variabler",
+          "displayName": "Miljø Variable"
+        }
+      },
+      "sitemap": "[variables('sitemaps').Administration]",
+      "attributes": {
+        "[merge()]": "[variables('audit')]",
+        "Name": {
+          "isPrimaryField": true
+        },
+        "Server": {
+          "type": {
+            "type": "lookup",
+            "referenceType": "Server"
+          }
+        },
+        "Application Name": {
+          "type": "string"
+        },
+        "Value": {
+          "type": "MultilineText"
+        }
+
+      }
+    },
+    "Document": {
+      "pluralName": "Documents",
+      "locale": {
+        "1030": {
+          "pluralName": "Dokumenter",
+          "displayName": "Dokument"
+        }
+      },
+      "sitemap": "[variables('sitemaps').Administration]",
+      "attributes": {
+        "[merge()]": "[variables('audit')]",
+        "Name": {
+          "isPrimaryField": true,
+          "locale": "[variables('translations')[propertyName(attribute())]]"
+        },
+        "Size": {
+          "type": "integer"
+        },
+        "Container": {
+          "type": {
+            "type": "Text",
+            "maxLength": 100
+          }
+        },
+
+        "Path": {
+          "type": {
+            "type": "Text",
+            "maxLength": 512
+          }
+        },
+        "ContentType": {
+          "type": "Text"
+        },
+        "Compressed": {
+          "type": "boolean"
+        },
+        "Data": {
+          "type": {
+            "type": "binary",
+            "format": "File"
+          }
+        }
+      }
+    },
+
+    "Permission": {
+      "pluralName": "Permissions",
+      "keys": {
+        "IX_Name": [
+          "Name"
+        ]
+      },
+      "sitemap": {
+        "[merge()]": "[variables('sitemaps').Administration]"
+      },
+      "locale": {
+        "1030": {
+          "pluralName": "Tilladelse",
+          "displayName": "Tilladelser"
+        }
+      },
+      "attributes": {
+        "[merge()]": "[variables('audit')]",
+        "Name": {
+          "isPrimaryField": true,
+          "locale": "[variables('translations')[propertyName(attribute())]]"
+        },
+        "Description": {
+          "type": "MultilineText",
+          "locale": "[variables('translations')[propertyName(attribute())]]"
+        }
+      },
+      "forms": {
+        "Main": {
+          "type": "Main",
+          "name": "Main Information",
+          "layout": {
+            "tabs": {
+              "TAB_General": "[variables('TAB_General')]",
+              "TAB_SecurityRoles": {
+                "title": "Security Roles",
+                "locale": {
+                  "1030": {
+                    "title": "Sikkerhedsroller"
+                  }
+                },
+                "columns": "[variables('layouts').OneColumnTemplate]"
+              }
+            }
+          },
+          "columns": {
+            "Name": "[variables('PrimaryInformation')]",
+            "Description": "[variables('PrimaryInformation')]"
+          }
+        }
+      }
+    },
+    "Security Role": {
+      "pluralName": "Security Roles",
+      "sitemap": {
+        "[merge()]": "[variables('sitemaps').Administration]"
+      },
+      "locale": {
+        "1030": {
+          "pluralName": "Sikkerhedsrolle",
+          "displayName": "Sikkerhedsroller"
+        }
+      },
+      "attributes": {
+        "Name": {
+          "isPrimaryField": true,
+          "locale": "[variables('translations')[propertyName(attribute())]]"
+        },
+        "Description": {
+          "type": "MultilineText",
+          "locale": "[variables('translations')[propertyName(attribute())]]"
+        },
+        "[merge()]": "[variables('audit')]"
+      },
+      "forms": {
+        "Main": {
+          "type": "Main",
+          "name": "Main Information",
+          "layout": {
+            "tabs": {
+              "TAB_General": "[variables('TAB_General')]",
+              "TAB_Permissions": {
+                "title": "Permissions",
+                "locale": {
+                  "1030": {
+                    "title": "Permissions"
+                  }
+                },
+                "columns": "[variables('layouts').OneColumnTemplate]"
+              }
+            }
+          },
+          "columns": {
+            "Name": "[variables('PrimaryInformation')]",
+            "Description": "[variables('PrimaryInformation')]"
+          }
+        }
+      }
+    },
+    "Security Role Permission": {
+      "pluralName": "Security Role Permissions",
+      "description": "The Many to Many relationship between security roles and permissions",
+      "sitemap": {
+        "[merge()]": "[variables('sitemaps').Administration]"
+      },
+      "keys": {
+        "IX_RolePermission": [
+          "Security Role",
+          "Permission"
+        ]
+      },
+      "locale": {
+        "1030": {
+          "pluralName": "Sikkerhedsrolle tilladelse",
+          "displayName": "Sikkerhedsrolle tilladelser"
+        }
+      },
+      "attributes": {
+        "Name": {
+          "isPrimaryField": true,
+          "locale": "[variables('translations')[propertyName(attribute())]]"
+        },
+        "Permission": {
+          "type": {
+            "type": "lookup",
+            "referenceType": "Permission",
+            "required": true,
+            "index": {
+              "unique": false
+            },
+            "forms": {
+              "Main": {
+                "type": "Main",
+                "name": "Main Information",
+                "tab": "TAB_SecurityRoles",
+                "column": "COLUMN_First",
+                "section": "SECTION_General"
+              }
+            }
+          }
+        },
+        "Security Role": {
+          "type": {
+            "type": "lookup",
+            "referenceType": "Security Role",
+            "required": true,
+            "forms": {
+              "Main": {
+                "type": "Main",
+                "name": "Main Information",
+                "tab": "TAB_Permissions",
+                "column": "COLUMN_First",
+                "section": "SECTION_General"
+              }
+            }
+          }
+        },
+        "[merge()]": "[variables('audit')]"
+      }
+    },
+    "Security Role Assignment": {
+      "pluralName": "Security Role Assignments",
+      "sitemap": "[variables('sitemaps').Administration]",
+      "keys": {
+        "IX_IdentityRole": [
+          "Security Role",
+          "Identity"
+        ]
+      },
+      "locale": {
+        "1030": {
+          "pluralName": "Sikkerhedsrolle tildeling",
+          "displayName": "Sikkerhedsrolle tildelinger"
+        }
+      },
+      "attributes": {
+        "Identity": {
+          "type": {
+            "type": "lookup",
+            "referenceType": "Identity",
+            "required": true,
+            "index": {
+              "unique": false
+            },
+            "forms": {
+              "Main": {
+                "type": "Main",
+                "name": "Main Information",
+                "tab": "TAB_SecurityRoles",
+                "column": "COLUMN_First",
+                "section": "SECTION_General"
+              }
+            }
+          }
+        },
+        "Security Role": {
+          "type": {
+            "type": "lookup",
+            "referenceType": "Security Role",
+            "required": true
+          }
+        },
+        "[merge()]": "[variables('audit')]"
+      }
+    },
+    "Security Group": {
+      "TPT": "Identity",
+      "pluralName": "Security Groups",
+      "locale": {
+        "1030": {
+          "pluralName": "Sikkerhedsgruppe",
+          "displayName": "Sikkerhedsgrupper"
+        }
+      },
+      "sitemap": "[variables('sitemaps').Administration]",
+      "keys": {
+        "ExternalId": [
+          "External Id"
+        ]
+      },
+      "attributes": {
+        "External Id": {
+          "type": "string"
+        },
+        "Is Business Unit": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Security Group Member": {
+      "pluralName": "Security Group Members",
+      "sitemap": "[variables('sitemaps').Administration]",
+      "locale": {
+        "1030": {
+          "pluralName": "Sikkerhedsgruppemedlem",
+          "displayName": "Sikkerhedsgruppemedlemmer"
+        }
+      },
+      "keys": {
+        "IX_SecurityGroupIdentity": [
+          "Security Group",
+          "Identity"
+        ]
+      },
+      "attributes": {
+        "Identity": {
+          "type": {
+            "type": "lookup",
+            "referenceType": "Identity",
+            "required": true,
+            "index": {
+              "unique": false
+            },
+            "forms": {
+              "Main": {
+                "type": "Main",
+                "name": "Main Information",
+                "tab": "TAB_SecurityGroups",
+                "column": "COLUMN_First",
+                "section": "SECTION_General"
+              }
+            }
+          }
+        },
+        "Security Group": {
+          "type": {
+            "type": "lookup",
+            "referenceType": "Security Group",
+            "required": true
+          }
+        },
+        "[merge()]": "[variables('audit')]"
+      }
+    },
+    "Record Share": {
+      "sitemap": "[variables('sitemaps').Administration]",
+      "pluralName": "Record Shares",
+      "locale": {
+        "1030": {
+          "pluralName": "Række Deling",
+          "displayName": "Række Delinger"
+        }
+      },
+      "attributes": {
+        "Identity": {
+          "isPrimaryField": true
+        },
+        "EntityName": {
+          "type": {
+            "type": "Text",
+            "required": true
+          }
+        },
+        "RecordId": {
+          "type": {
+            "type": "guid",
+            "required": true
+          }
+        },
+        "Permission": {
+          "type": {
+            "type": "lookup",
+            "index": {
+              "unique": false
+            },
+            "referenceType": "Permission",
+            "required": true
+          }
+        },
+        "[merge()]": "[variables('audit')]"
+      }
+    },
+    "Signin": {
+      "pluralName": "Signins",
+      "attributes": {
+        "[merge()]": "[variables('audit')]",
+        "Identity": {
+          "readonly": true,
+          "type": {
+            "type": "lookup",
+            "referenceType": "Identity",
+            "required": true,
+            "index": {
+              "unique": false
+            },
+            "forms": {
+              "Main": {
+                "type": "Main",
+                "name": "Main Information",
+                "tab": "TAB_Signins",
+                "column": "COLUMN_First",
+                "section": "SECTION_General"
+              }
+            }
+          }
+        },
+        "Status": {
+          "type": {
+            "type": "Choice",
+            "name": "Signin Status",
+            "options": {
+              "Approved": {
+                "value": 0,
+                "locale": {
+                  "1030": {
+                    "displayName": "Godkendt"
+                  }
+                }
+              },
+              "Rejected": {
+                "value": 1,
+                "locale": {
+                  "1030": {
+                    "displayName": "Afvist"
+                  }
+                }
+              },
+              "Used": {
+                "value": 2,
+                "locale": {
+                  "1030": {
+                    "displayName": "Brugt"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Properties": {
+          "type": "MultilineText",
+          "readonly": true
+        },
+        "Claims": {
+          "type": "MultilineText",
+          "readonly": true
+        },
+        "SessionId": {
+          "type": {
+            "type": "Text",
+            "maxLength": 64
+          }
+        },
+        "Provider": {
+          "type": {
+            "type": "Text"
+          }
+        }
+      }
+    },
+    "System User": {
+      "TPT": "Identity",
+      "pluralName": "System Users",
+      "attributes": {
+        "Email": {
+          "type": {
+            "type": "Text",
+            "format": "Email"
+          }
+        }
+      }
+    },
+    "Workflow Run": {
+      "pluralName": "Workflow Runs",
+      "locale": {
+        "1030": {
+          "pluralName": "Arbejdsproces kørsler",
+          "displayName": "Arbejdsproces kørsel"
+        }
+      },
+      "sitemap": "[variables('sitemaps').Administration]",
+      "attributes": {
+        "[merge()]": "[variables('audit')]",
+        "Name": {
+          "isPrimaryField": true
+        },
+        "State": {
+          "type": {
+            "type": "binary",
+            "format": "File"
+          }
+        }
+      }
+    }
+  },
+  "variables": {
+    "layouts": {
+      "OneColumnTemplate": {
+        "COLUMN_First": {
+          "sections": {
+            "SECTION_General": {}
+          }
+        }
+      },
+      "TwoColumnsTemplate": {
+        "COLUMN_First": {
+          "sections": {
+            "SECTION_General": {}
+          }
+        },
+        "COLUMN_Second": {
+          "sections": {
+            "SECTION_Additional": {}
+          }
+        }
+      }
+    },
+    "PrimaryInformation": {
+      "tab": "TAB_General",
+      "column": "COLUMN_First",
+      "section": "SECTION_General"
+    },
+    "TAB_General": {
+      "title": "General Information",
+      "locale": {
+        "1030": {
+          "title": "General Information"
+        }
+      },
+      "columns": "[variables('layouts').TwoColumnsTemplate]"
+    },
+    "TAB_Administrative": {
+      "title": "Administrative",
+      "locale": {
+        "1030": {
+          "title": "Administrative"
+        }
+      },
+      "columns": {
+        "COLUMN_First": {
+          "sections": {
+            "SECTION_General": {}
+          }
+        }
+      }
+    },
+    "TAB_Administrative_Columns": {
+      "Created On": {
+        "[merge()]": "[variables('Administrative')]",
+        "readonly": true
+      },
+      "Created By": {
+        "[merge()]": "[variables('Administrative')]",
+        "readonly": true
+      },
+      "Modified On": {
+        "[merge()]": "[variables('Administrative')]",
+        "readonly": true
+      },
+      "Modified By": {
+        "[merge()]": "[variables('Administrative')]",
+        "readonly": true
+      },
+      "Owner": {
+        "[merge()]": "[variables('Administrative')]",
+        "readonly": true
+      }
+    },
+    "Administrative": {
+      "tab": "TAB_Administrative",
+      "column": "COLUMN_First",
+      "section": "SECTION_General"
+    },
+    "audit": {
+      "Modified On": {
+        "locale": {
+          "1030": {
+            "displayName": "Ændret"
+          }
+        },
+        "type": {
+          "type": "DateTime",
+          "required": true
+        }
+      },
+      "Created On": {
+        "locale": {
+          "1030": {
+            "displayName": "Oprettet"
+          }
+        },
+        "type": {
+          "type": "DateTime",
+          "required": true
+        }
+      },
+      "Owner": {
+        "locale": {
+          "1030": {
+            "displayName": "Ejer"
+          }
+        },
+        "type": {
+          "type": "lookup",
+          "referenceType": "Identity",
+          "required": true
+        }
+      },
+      "Modified By": {
+        "locale": {
+          "1030": {
+            "displayName": "Ændret af"
+          }
+        },
+        "type": {
+          "type": "lookup",
+          "referenceType": "Identity",
+          "required": true
+        }
+      },
+      "Created By": {
+        "locale": {
+          "1030": {
+            "displayName": "Oprettet af"
+          }
+        },
+        "type": {
+          "type": "lookup",
+          "referenceType": "Identity",
+          "required": true
+        }
+      },
+      "Row Version": {
+        "type": {
+          "type": "binary"
+        },
+        "isRowVersion": true
+      }
+    },
+    "translations": {
+      "Name": {
+        "1030": {
+          "displayName": "Navn"
+        }
+      },
+      "Description": {
+        "1030": {
+          "displayName": "Beskrivelse"
+        }
+      }
+    },
+    "sitemaps": {
+      "Administration": {
+        "app": "Kjeldager CRM",
+        "area": "Administration",
+        "group": "Administration"
+      }
+    }
+  },
+  "version": "1.0.8",
+  "config": {
+    "SVG_LOGO_PATH": "/logo.svg"
+  },
+  "apps": {
+    "Kjeldager CRM": {}
+  },
+  "errorMessages": {}
+}
