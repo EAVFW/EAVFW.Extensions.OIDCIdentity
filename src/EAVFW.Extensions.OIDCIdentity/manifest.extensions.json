@@ -609,6 +609,99 @@
 				}
 			}
 		},
+		"OpenId Connect Resource": {
+			"pluralName": "OpenId Connect Resources",
+			"description": "Models API, Identity and Scope Resources of OAuth2 Spec",
+			"abstract": true,
+			"keys": {
+				"IX_Name": [ "Name" ]
+			},
+			"attributes": {
+				"[merge()]": "[variables('audit')]",
+				"Name": {
+					"type": "Text",
+					"description": "The unique name of the resource"
+				},
+				//"Type Code": {
+				//  "description": "Specifies the type of the resource, either identity, API or scope",
+				//  "type": {
+				//    "type": "Choice",
+				//    "name": "OpenId Connect Resource Type Codes",
+				//    "options": {
+				//      "Identity": 0,
+				//      "API": 1,
+				//      "Scope": 2
+				//    }
+				//  }
+				//},
+				"Display Name": {
+					"isPrimaryField": true,
+					"description": "The displayname of the resource"
+				},
+				"Description": {
+					"description": "The description of the resource",
+					"type": {
+						"type": "Text",
+						"maxLength": 255
+					}
+				},
+				"Show In Discovery Document": {
+					"description": "Specifies whether this scope is shown in the discovery document",
+					"type": "boolean",
+					"default": true
+				},
+				"Properties": {
+					"type": "MultilineText",
+					"description": "Specifies custom properties for the client"
+				},
+				//"Required": {
+				//  "description": "Specifies whether the user can de-select the scope on the consent screen",
+				//  "type": "boolean"
+				//},
+				//"Emphasize": {
+				//  "description": "Specifies whether the consent screen will emphasize this scope. Used for sensitive or important scopes",
+				//  "type": "boolean"
+				//},
+				//"Allowed Identity Token Signing Algorithms": {
+				//  "type": {
+				//    "type": "Choices",
+				//    "name": "Allowed Identity Token Signing Algorithms",
+				//    "options": {
+				//      "ES256": {
+				//        "value": 1
+				//      }
+				//    }
+				//  }
+				//},
+				"User Claims": {
+					"description": "List of associated user claims that should be included when this resource is requested",
+					"type": "MultilineText"
+				}
+			}
+		},
+		"OpenId Connect API Resource": {
+			"pluralName": "OpenId Connect API Resources",
+			"TPT": "OpenId Connect Resource",
+			"description": "Models an OpenId Connect or OAuth2 Resource Scope",
+			"sitemap": {
+				"[merge()]": "[variables('sitemaps').OpenIdConnect]",
+				"title": "APIs"
+			},
+			"attributes": {
+				"Required": {
+					"description": "Specifies whether the user can de-select the scope on the consent screen",
+					"type": "boolean"
+				},
+				"Emphasize": {
+					"description": "Specifies whether the consent screen will emphasize this scope. Used for sensitive or important scopes",
+					"type": "boolean"
+				},
+				"Require Resource Indicator": {
+					"description": "Indicates if this API resource requires the resource indicator to resquest it, and expects access tokens issues to it will only ever contain this API resource as the audience.",
+					"type": "boolean"
+				}
+			}
+		},
 		"OpenId Connect Secret": {
 			"pluralName": "OpenId Connect Secrets",
 			"description": "Models a client secret with identifier and expiration",
@@ -617,6 +710,7 @@
 				"IX_ClientSecret": [ "Client", "Value" ]
 			},
 			"attributes": {
+				"[merge()]": "[variables('audit')]",
 				"Description": {
 					"isPrimaryField": true,
 					"type": {
@@ -843,99 +937,8 @@
 				}
 			}
 		},
-		"OpenId Connect Resource": {
-			"pluralName": "OpenId Connect Resources",
-			"description": "Models API, Identity and Scope Resources of OAuth2 Spec",
-			"abstract": true,
-			"keys": {
-				"IX_Name": [ "Name" ]
-			},
-			"attributes": {
-				"[merge()]": "[variables('audit')]",
-				"Name": {
-					"type": "Text",
-					"description": "The unique name of the resource"
-				},
-				//"Type Code": {
-				//  "description": "Specifies the type of the resource, either identity, API or scope",
-				//  "type": {
-				//    "type": "Choice",
-				//    "name": "OpenId Connect Resource Type Codes",
-				//    "options": {
-				//      "Identity": 0,
-				//      "API": 1,
-				//      "Scope": 2
-				//    }
-				//  }
-				//},
-				"Display Name": {
-					"isPrimaryField": true,
-					"description": "The displayname of the resource"
-				},
-				"Description": {
-					"description": "The description of the resource",
-					"type": {
-						"type": "Text",
-						"maxLength": 255
-					}
-				},
-				"Show In Discovery Document": {
-					"description": "Specifies whether this scope is shown in the discovery document",
-					"type": "boolean",
-					"default": true
-				},
-				"Properties": {
-					"type": "MultilineText",
-					"description": "Specifies custom properties for the client"
-				},
-				//"Required": {
-				//  "description": "Specifies whether the user can de-select the scope on the consent screen",
-				//  "type": "boolean"
-				//},
-				//"Emphasize": {
-				//  "description": "Specifies whether the consent screen will emphasize this scope. Used for sensitive or important scopes",
-				//  "type": "boolean"
-				//},
-				//"Allowed Identity Token Signing Algorithms": {
-				//  "type": {
-				//    "type": "Choices",
-				//    "name": "Allowed Identity Token Signing Algorithms",
-				//    "options": {
-				//      "ES256": {
-				//        "value": 1
-				//      }
-				//    }
-				//  }
-				//},
-				"User Claims": {
-					"description": "List of associated user claims that should be included when this resource is requested",
-					"type": "MultilineText"
-				}
-			}
-		},
-		"OpenId Connect API Resource": {
-			"pluralName": "OpenId Connect API Resources",
-			"TPT": "OpenId Connect Resource",
-			"description": "Models an OpenId Connect or OAuth2 Resource Scope",
-			"sitemap": {
-				"[merge()]": "[variables('sitemaps').OpenIdConnect]",
-				"title": "APIs"
-			},
-			"attributes": {
-				"Required": {
-					"description": "Specifies whether the user can de-select the scope on the consent screen",
-					"type": "boolean"
-				},
-				"Emphasize": {
-					"description": "Specifies whether the consent screen will emphasize this scope. Used for sensitive or important scopes",
-					"type": "boolean"
-				},
-				"Require Resource Indicator": {
-					"description": "Indicates if this API resource requires the resource indicator to resquest it, and expects access tokens issues to it will only ever contain this API resource as the audience.",
-					"type": "boolean"
-				}
-			}
-		},
+
+
 		"OpenId Connect Identity Resource": {
 			"pluralName": "OpenId Connect Identity Resources",
 			"TPT": "OpenId Connect Resource",
