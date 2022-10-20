@@ -8,14 +8,19 @@
 	  <EAVFrameworkSourceGenerator>True</EAVFrameworkSourceGenerator>
 	  <RootNamespace>MC.Models</RootNamespace>
 	  <ManifestPath Condition="$(ManifestPath) == ''">manifest.json</ManifestPath>
+<IsPackable>false</IsPackable>
   </PropertyGroup>
 
 	<ItemGroup Condition="$(RemoteEAVFramework) == 'false'">
 		<ProjectReference OutputItemType="Analyzer" ReferenceOutputAssembly="false" Include="$(LocalEAVFrameworkPath)\generators\EAVFramework.SourceGenerator\EAVFramework.SourceGenerator.csproj" />
+		<ProjectReference Include="..\..\..\..\dev\eavfw\EAVFW.Extensions.Documents\src\EAVFW.Extensions.Documents\EAVFW.Extensions.Documents.csproj" />
+		<ProjectReference Include="..\..\..\EAVFW.Extensions.SecurityModel\src\EAVFW.Extensions.SecurityModel\EAVFW.Extensions.SecurityModel.csproj" />
 		<ProjectReference Include="$(LocalEAVFrameworkPath)\src\EAVFramework.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="$(RemoteEAVFramework) != 'false'">
 		<PackageReference Include="EAVFramework" Version="$(EAVFrameworkVersion)" />
+		<PackageReference Include="EAVFW.Extensions.Documents" Version="*" />
+		<PackageReference Include="EAVFW.Extensions.SecurityModel" Version="*" />
 		<PackageReference OutputItemType="Analyzer" ReferenceOutputAssembly="false" Include="EAVFramework.SourceGenerator" Version="$(EAVFrameworkVersion)" />
 	</ItemGroup>
 
@@ -62,8 +67,7 @@
 		<Folder Include="Generated" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\..\..\dev\eavfw\EAVFW.Extensions.Documents\src\EAVFW.Extensions.Documents\EAVFW.Extensions.Documents.csproj" />
-	  <ProjectReference Include="..\..\..\..\EAVFW.Extensions.SecurityModel\src\EAVFW.Extensions.SecurityModel\EAVFW.Extensions.SecurityModel.csproj" />
+	  
 	  <ProjectReference Include="..\..\src\EAVFW.Extensions.OIDCIdentity\EAVFW.Extensions.OIDCIdentity.csproj" />
 	</ItemGroup>
 	<Target Name="AddSourceGeneratedFiles" AfterTargets="CoreCompile" Condition="$(EmitCompilerGeneratedFiles) == 'true'">

@@ -18,15 +18,28 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelGenerationTest", "test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eavfw", "eavfw", "{584F293C-BB3A-4F09-856D-17ABC7C9CA2D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EAVFramework", "..\..\..\dev\EAVFramework\src\EAVFramework.csproj", "{94C586E9-B18E-4C21-BFCA-D613B5C38E52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EAVFramework", "..\..\dev\EAVFramework\src\EAVFramework.csproj", "{94C586E9-B18E-4C21-BFCA-D613B5C38E52}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EAVFramework.SourceGenerator", "..\..\..\dev\EAVFramework\generators\EAVFramework.SourceGenerator\EAVFramework.SourceGenerator.csproj", "{80E9798A-1FAF-4FCE-A724-71889F5FCA44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EAVFramework.SourceGenerator", "..\..\dev\EAVFramework\generators\EAVFramework.SourceGenerator\EAVFramework.SourceGenerator.csproj", "{80E9798A-1FAF-4FCE-A724-71889F5FCA44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EAVFW.Extensions.SecurityModel", "..\..\EAVFW.Extensions.SecurityModel\src\EAVFW.Extensions.SecurityModel\EAVFW.Extensions.SecurityModel.csproj", "{67716C81-B0A5-46F6-95AA-21D49551E22A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EAVFW.Extensions.SecurityModel", "..\EAVFW.Extensions.SecurityModel\src\EAVFW.Extensions.SecurityModel\EAVFW.Extensions.SecurityModel.csproj", "{67716C81-B0A5-46F6-95AA-21D49551E22A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EAVFW.Extensions.Documents", "..\..\..\dev\eavfw\EAVFW.Extensions.Documents\src\EAVFW.Extensions.Documents\EAVFW.Extensions.Documents.csproj", "{439D1FF2-6639-4C74-A45A-9A9B23543C37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EAVFW.Extensions.Documents", "..\..\dev\eavfw\EAVFW.Extensions.Documents\src\EAVFW.Extensions.Documents\EAVFW.Extensions.Documents.csproj", "{439D1FF2-6639-4C74-A45A-9A9B23543C37}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9DFA7BD5-1B2A-40F3-A262-874601892B4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{599B499F-018B-4225-81D6-527708493575}"
+	ProjectSection(SolutionItems) = preProject
+		.github\dependabot.yml = .github\dependabot.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{1ECC7BBE-62BB-4ECE-AE96-C3230EBE94B8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\.releaserc = .github\workflows\.releaserc
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+		.github\workflows\todo.yml = .github\workflows\todo.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +82,7 @@ Global
 		{80E9798A-1FAF-4FCE-A724-71889F5FCA44} = {584F293C-BB3A-4F09-856D-17ABC7C9CA2D}
 		{67716C81-B0A5-46F6-95AA-21D49551E22A} = {584F293C-BB3A-4F09-856D-17ABC7C9CA2D}
 		{439D1FF2-6639-4C74-A45A-9A9B23543C37} = {584F293C-BB3A-4F09-856D-17ABC7C9CA2D}
+		{1ECC7BBE-62BB-4ECE-AE96-C3230EBE94B8} = {599B499F-018B-4225-81D6-527708493575}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A162611-9D57-4AD1-8549-C2206EA4F98B}

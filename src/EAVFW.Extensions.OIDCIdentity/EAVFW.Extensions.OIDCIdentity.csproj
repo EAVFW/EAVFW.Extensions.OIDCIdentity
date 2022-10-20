@@ -10,6 +10,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/EAVFW/EAVFW.Extensions.OIDCIdentity</RepositoryUrl>
 		<RemoteEAVFramework>$(UseEAVFromNuget)</RemoteEAVFramework>
+		<IncludeSymbols>true</IncludeSymbols>
 	</PropertyGroup>
 
 	<ItemGroup>
