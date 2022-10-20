@@ -6,7 +6,6 @@ using System.Collections.Generic;
 namespace EAVFW.Extensions.OIDCIdentity
 {
     [EntityInterface(EntityKey = "OpenId Connect Client")]
-  //  [ConstraintMapping(EntityKey = "Allowed Grant Type", AttributeKey = "Allowed Grant Type Value", ConstraintName = "TAllowedGrantTypeValue")]
     [ConstraintMapping(AttributeKey = "Consent Type", ConstraintName = "TOpenIdConnectClientConsentTypes")]
     [ConstraintMapping(AttributeKey = "Type", ConstraintName = "TOpenIdConnectClientTypes")]
     [ConstraintMapping(EntityKey = "Allowed Grant Type", ConstraintName = nameof(TAllowedGrantType))]
@@ -14,14 +13,13 @@ namespace EAVFW.Extensions.OIDCIdentity
     public interface IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
         where TOpenIdConnectClientTypes : struct,IConvertible
         where TOpenIdConnectClientConsentTypes : struct, IConvertible
-       // where TAllowedGrantTypeValue : struct, IConvertible
         where TAllowedGrantType : DynamicEntity //, IAllowedGrantType<TAllowedGrantTypeValue>
     {
         public Int32? AccessTokenLifetime { get; set; }
         public Guid Id { get; set; }
         public String ClientId {get;set;}
         //public ICollection<TAllowedGrantType> AllowedGrantTypes { get; set; }
-        public ICollection<TAllowedGrantType> OpenIdConnectClientAllowedGrantTypes { get; set; }
+        public ICollection<TAllowedGrantType> AllowedGrantTypes { get; set; }
 
         public String PostLogoutRedirectURIs { get; set; }
         public String ClientSecret { get; set; }

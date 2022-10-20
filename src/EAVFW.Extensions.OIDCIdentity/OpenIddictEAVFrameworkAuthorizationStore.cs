@@ -79,7 +79,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 
         private IQueryable<TOpenIdConnectAuthorization> Loader => from authorization in Authorizations
                     .Include(authorization => authorization.Client)
-                    .Include(a => a.OpenIdConnectAuthorizationScopes.Select(s => s.Scope)).AsTracking()
+                    .Include(a => a.Scopes.Select(s => s.Scope)).AsTracking()
                                                                   select authorization;
 
 
@@ -476,7 +476,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             {
                 throw new ArgumentNullException(nameof(authorization));
             }
-            return new ValueTask<ImmutableArray<string>>(authorization.OpenIdConnectAuthorizationScopes.Select(c => c.Scope.Name).ToImmutableArray());
+            return new ValueTask<ImmutableArray<string>>(authorization.Scopes.Select(c => c.Scope.Name).ToImmutableArray());
 
         }
 
@@ -739,13 +739,13 @@ namespace EAVFW.Extensions.OIDCIdentity
                 throw new ArgumentNullException(nameof(authorization));
             }
 
-            foreach (var scope in authorization.OpenIdConnectAuthorizationScopes.Select(c => c.Scope).Where(sc => !scopes.Contains(sc.Name)))
+            foreach (var scope in authorization.Scopes.Select(c => c.Scope).Where(sc => !scopes.Contains(sc.Name)))
                 Context.Context.Entry(scope).State = EntityState.Deleted;
 
-            var missing = scopes.Where(sc => !authorization.OpenIdConnectAuthorizationScopes.Any(c => c.Scope.Name == sc)).ToArray();
+            var missing = scopes.Where(sc => !authorization.Scopes.Any(c => c.Scope.Name == sc)).ToArray();
             var missingIds = await Context.Set<TOpenIdConnectIdentityResource>().Where(c => missing.Contains(c.Name)).Select(c => c.Id).ToListAsync();
             foreach (var scope in missingIds)
-                authorization.OpenIdConnectAuthorizationScopes.Add(new TOpenIdConnectAuthorizationScope { ScopeId = scope });
+                authorization.Scopes.Add(new TOpenIdConnectAuthorizationScope { ScopeId = scope });
 
 
         }

@@ -41,11 +41,12 @@ namespace EAVFW.Extensions.OIDCIdentity
         public string Properties { get; set; }
 
  
-        public ICollection<TOpenIdConnectScopeResource> OpenIdConnectScopeResources { get; set; }
+        public ICollection<TOpenIdConnectScopeResource> Resources { get; set; }
     }
 
 
     [EntityInterface(EntityKey = "OpenId Connect Scope")]
+    [ConstraintMapping(EntityKey = "OpenId Connect Scope Resource", ConstraintName = nameof(TOpenIdConnectScopeResource))]
     public interface IOpenIdConnectScope<TOpenIdConnectScopeResource>
           where TOpenIdConnectScopeResource : DynamicEntity
     {

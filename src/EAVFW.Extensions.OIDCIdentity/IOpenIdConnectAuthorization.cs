@@ -43,7 +43,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         public TOpenIdConnectClient Client { get; set; }
         public DateTime? CreatedOn { get; set; }    
         public ICollection<TOpenIdConnectToken> OpenIdConnectTokens { get; set; }
-        public ICollection<TOpenIdConnectAuthorizationScope> OpenIdConnectAuthorizationScopes { get; set; }
+        public ICollection<TOpenIdConnectAuthorizationScope> Scopes { get; set; }
 
         public string Properties { get; set; }
     }

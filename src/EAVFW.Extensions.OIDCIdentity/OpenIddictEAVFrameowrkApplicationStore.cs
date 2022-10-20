@@ -105,7 +105,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
 
-        private IQueryable<TOpenIdConnectClient> Loader => Applications.Include(c => c.OpenIdConnectClientAllowedGrantTypes).AsTracking();
+        private IQueryable<TOpenIdConnectClient> Loader => Applications.Include(c => c.AllowedGrantTypes).AsTracking();
         /// <inheritdoc/>
         public virtual async ValueTask<long> CountAsync(CancellationToken cancellationToken)
             => await Applications.AsQueryable().LongCountAsync(cancellationToken);
@@ -454,7 +454,7 @@ Reload the application from the database and retry the operation.", exception);
                 throw new ArgumentNullException(nameof(application));
             }
 
-            var permissions = application.OpenIdConnectClientAllowedGrantTypes.SelectMany(g =>
+            var permissions = application.AllowedGrantTypes.SelectMany(g =>
                 AuthorizationCode.ContainsKey(g.AllowedGrantTypeValue) ?
                 AuthorizationCode[g.AllowedGrantTypeValue] : new string[] { OpenIddictConstants.Permissions.Prefixes.GrantType + g.AllowedGrantTypeValue.ToString()?.ToLower() });
 

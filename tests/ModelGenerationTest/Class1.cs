@@ -5,6 +5,6 @@ namespace ModelGenerationTest
 {
     public class Class1 
     {
-       // public Type Test = typeof(OpenIddictEAVFrameworkeExtensions);
+        public Type Test = typeof(OpenIddictEAVFrameworkeExtensions);
     }
 }
