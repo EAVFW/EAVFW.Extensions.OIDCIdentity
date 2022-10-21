@@ -32,7 +32,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             , TOpenIdConnectScope, TOpenIdConnectScopeResource, TOpenIdConnectResource, TOpenIdConnectIdentityResource>, IOpenIddictAuthorizationStore<TOpenIdConnectAuthorization>
           where TContext : DynamicContext
            where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
-          where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectToken, TOpenIdConnectAuthorizationScope, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
+          where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
           where TOpenIdConnectToken : DynamicEntity, IOpenIdConnectToken<TOpenIdConnectClient, TOpenIdConnectAuthorization, TOpenIdConnectTokenStatus, TOpenIdConnectTokenType>
           where TOpenIdConnectTokenStatus : struct, IConvertible
           where TOpenIdConnectTokenType : struct, IConvertible
@@ -43,7 +43,7 @@ namespace EAVFW.Extensions.OIDCIdentity
           where TOpenIdConnectClientConsentTypes : struct, IConvertible
           where TAllowedGrantTypeValue : struct, IConvertible
             where TOpenIdConnectScopeResource : DynamicEntity, IOpenIdConnectScopeResource<TOpenIdConnectResource, TOpenIdConnectIdentityResource>
-            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource<TOpenIdConnectScopeResource>
+            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource
             where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
         where TOpenIdConnectIdentityResource : DynamicEntity, IOpenIdConnectIdentityResource
         where TOpenIdConnectAuthorizationType : struct, IConvertible
@@ -79,7 +79,8 @@ namespace EAVFW.Extensions.OIDCIdentity
 
         private IQueryable<TOpenIdConnectAuthorization> Loader => from authorization in Authorizations
                     .Include(authorization => authorization.Client)
-                    .Include(a => a.Scopes.Select(s => s.Scope)).AsTracking()
+                   // .Include(a => a.OpenIdConnectAuthorizationScopes.Select(s => s.Scope))
+                                                                      .AsTracking()
                                                                   select authorization;
 
 
@@ -469,14 +470,26 @@ namespace EAVFW.Extensions.OIDCIdentity
             return new ValueTask<ImmutableDictionary<string, JsonElement>>(properties);
         }
 
+        private async ValueTask< IEnumerable<TOpenIdConnectAuthorizationScope>> LoadScopes(TOpenIdConnectAuthorization authorization)
+        {
+            var entry = Context.Entry(authorization);
+            var nav = entry.Collection("openidconnectauthorizationscopes");
+            await nav.LoadAsync();
+
+            return nav.CurrentValue.OfType<TOpenIdConnectAuthorizationScope>();
+        }
         /// <inheritdoc/>
-        public virtual ValueTask<ImmutableArray<string>> GetScopesAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
+        public virtual async ValueTask<ImmutableArray<string>> GetScopesAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {
                 throw new ArgumentNullException(nameof(authorization));
             }
-            return new ValueTask<ImmutableArray<string>>(authorization.Scopes.Select(c => c.Scope.Name).ToImmutableArray());
+
+           
+
+            var scopes = await LoadScopes(authorization);
+            return  scopes.Select(c => c.Scope.Name).ToImmutableArray();
 
         }
 
@@ -597,7 +610,7 @@ namespace EAVFW.Extensions.OIDCIdentity
                     await (from authorization in Loader
                            where authorization.CreatedOn < date
                            where !Object.Equals(authorization.Status, ValidTOpenIdConnectAuthorizationStatus) ||
-                                (Object.Equals(authorization.Type, AdHocOpenIdConnectAuthorizationType) && !authorization.OpenIdConnectTokens.Any())
+                                (Object.Equals(authorization.Type, AdHocOpenIdConnectAuthorizationType) &&  !Tokens.Any(t=>t.AuthorizationId == authorization.Id))
                            orderby authorization.Id
                            select authorization).Take(1_000).ToListAsync(cancellationToken);
 
@@ -739,14 +752,17 @@ namespace EAVFW.Extensions.OIDCIdentity
                 throw new ArgumentNullException(nameof(authorization));
             }
 
-            foreach (var scope in authorization.Scopes.Select(c => c.Scope).Where(sc => !scopes.Contains(sc.Name)))
+            var authorizationscopes = await LoadScopes(authorization);
+
+            foreach (var scope in authorizationscopes.Select(c => c.Scope).Where(sc => !scopes.Contains(sc.Name)))
                 Context.Context.Entry(scope).State = EntityState.Deleted;
 
-            var missing = scopes.Where(sc => !authorization.Scopes.Any(c => c.Scope.Name == sc)).ToArray();
+            var missing = scopes.Where(sc => !authorizationscopes.Any(c => c.Scope.Name == sc)).ToArray();
             var missingIds = await Context.Set<TOpenIdConnectIdentityResource>().Where(c => missing.Contains(c.Name)).Select(c => c.Id).ToListAsync();
             foreach (var scope in missingIds)
-                authorization.Scopes.Add(new TOpenIdConnectAuthorizationScope { ScopeId = scope });
-
+                Context.Set<TOpenIdConnectAuthorizationScope>().Add(new TOpenIdConnectAuthorizationScope { ScopeId = scope, AuthorizationId = authorization.Id   });
+            
+            
 
         }
 

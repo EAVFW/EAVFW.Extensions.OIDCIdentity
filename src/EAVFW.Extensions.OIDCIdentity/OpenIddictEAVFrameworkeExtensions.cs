@@ -133,7 +133,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectScopeResource,
             TOpenIdConnectResource,
             TOpenIdConnectScope>(this IServiceCollection services)
-                where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectToken, TOpenIdConnectAuthorizationScope, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
+                where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
                 where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
                 where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
                 where TAllowedGrantTypeValue : struct, IConvertible
@@ -147,7 +147,7 @@ namespace EAVFW.Extensions.OIDCIdentity
                 where TOpenIdConnectTokenStatus : struct, IConvertible
                 where TOpenIdConnectTokenType : struct, IConvertible
               where TOpenIdConnectScopeResource : DynamicEntity, IOpenIdConnectScopeResource<TOpenIdConnectResource, TOpenIdConnectIdentityResource>, new()
-            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource<TOpenIdConnectScopeResource>
+            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource
          where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
             where TContext : DynamicContext
         {
@@ -237,7 +237,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectResource,
             TOpenIdConnectScope>(this OpenIddictCoreBuilder builder)
 
-            where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectToken, TOpenIdConnectAuthorizationScope, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
+            where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
             where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
             where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
             where TAllowedGrantTypeValue : struct, IConvertible
@@ -251,7 +251,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             where TOpenIdConnectTokenStatus : struct, IConvertible
             where TOpenIdConnectTokenType : struct, IConvertible
               where TOpenIdConnectScopeResource : DynamicEntity, IOpenIdConnectScopeResource<TOpenIdConnectResource, TOpenIdConnectIdentityResource>, new()
-            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource<TOpenIdConnectScopeResource>
+            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource
             where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
             where TContext : DynamicContext
         {
@@ -429,7 +429,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectResource,
             TOpenIdConnectScope>(
             this OpenIddictCoreBuilder builder, Action<OpenIddictEAVFrameworkBuilder> configuration)
-            where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectToken, TOpenIdConnectAuthorizationScope, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
+            where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient,  TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
             where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
             where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
             where TAllowedGrantTypeValue : struct, IConvertible
@@ -443,7 +443,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             where TOpenIdConnectTokenStatus : struct, IConvertible
             where TOpenIdConnectTokenType : struct, IConvertible
             where TOpenIdConnectScopeResource : DynamicEntity, IOpenIdConnectScopeResource<TOpenIdConnectResource, TOpenIdConnectIdentityResource>, new()
-            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource<TOpenIdConnectScopeResource>
+            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource
  where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
             where TContext : DynamicContext
 

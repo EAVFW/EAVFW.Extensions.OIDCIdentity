@@ -5,14 +5,19 @@ using System.Collections.Generic;
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
+    
+ 
     [EntityInterface(EntityKey = "OpenId Connect Authorization")]
    // [ConstraintMapping(EntityKey = "Allowed Grant Type", AttributeKey = "Allowed Grant Type Value", ConstraintName = nameof(TAllowedGrantTypeValue))]
     [ConstraintMapping(AttributeKey = "Type", ConstraintName = nameof(TOpenIdConnectAuthorizationType))]
     [ConstraintMapping(AttributeKey = "Status", ConstraintName = nameof(TOpenIdConnectAuthorizationStatus))]
-    public interface IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectToken, TOpenIdConnectAuthorizationScope,TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
+    [ConstraintMapping(EntityKey = "OpenId Connect Client", ConstraintName = nameof(TOpenIdConnectClient))]
+   // [ConstraintMapping(EntityKey = "OpenId Connect Token", ConstraintName = nameof(TOpenIdConnectToken))]
+ //   [ConstraintMapping(EntityKey = "OpenId Connect Authorization Scope", ConstraintName = nameof(TOpenIdConnectAuthorizationScope))]
+    public interface IOpenIdConnectAuthorization<TOpenIdConnectClient,TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
         where TOpenIdConnectClient : DynamicEntity
-        where TOpenIdConnectToken : DynamicEntity
-        where TOpenIdConnectAuthorizationScope : DynamicEntity
+       // where TOpenIdConnectToken : DynamicEntity
+       // where TOpenIdConnectAuthorizationScope : DynamicEntity
         where TOpenIdConnectAuthorizationStatus : struct, IConvertible
         where TOpenIdConnectAuthorizationType : struct, IConvertible
 
@@ -42,8 +47,8 @@ namespace EAVFW.Extensions.OIDCIdentity
         public Guid? SubjectId { get; set; }
         public TOpenIdConnectClient Client { get; set; }
         public DateTime? CreatedOn { get; set; }    
-        public ICollection<TOpenIdConnectToken> OpenIdConnectTokens { get; set; }
-        public ICollection<TOpenIdConnectAuthorizationScope> Scopes { get; set; }
+        //public ICollection<TOpenIdConnectToken> OpenIdConnectTokens { get; set; }
+        //public ICollection<TOpenIdConnectAuthorizationScope> OpenIdConnectAuthorizationScopes { get; set; }
 
         public string Properties { get; set; }
     }

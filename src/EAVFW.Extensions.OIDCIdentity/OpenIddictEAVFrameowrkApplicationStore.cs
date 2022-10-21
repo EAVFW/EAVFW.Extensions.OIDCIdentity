@@ -61,7 +61,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         IOpenIddictApplicationStore<TOpenIdConnectClient>
 
         where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
-        where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectToken, TOpenIdConnectAuthorizationScope, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
+        where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
         where TOpenIdConnectAuthorizationStatus : struct, IConvertible
         where TOpenIdConnectToken : DynamicEntity, IOpenIdConnectToken<TOpenIdConnectClient, TOpenIdConnectAuthorization, TOpenIdConnectTokenStatus, TOpenIdConnectTokenType>
         where TOpenIdConnectTokenStatus : struct, IConvertible
@@ -72,7 +72,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         where TOpenIdConnectClientConsentTypes : struct, IConvertible
         where TAllowedGrantTypeValue : struct, IConvertible
             where TOpenIdConnectScopeResource : DynamicEntity, IOpenIdConnectScopeResource<TOpenIdConnectResource, TOpenIdConnectIdentityResource>
-            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource<TOpenIdConnectScopeResource>
+            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource
     where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
         where TOpenIdConnectIdentityResource : DynamicEntity, IOpenIdConnectIdentityResource
          where TOpenIdConnectAuthorizationType : struct, IConvertible
@@ -145,11 +145,17 @@ namespace EAVFW.Extensions.OIDCIdentity
 
 
 
-            Task<List<TOpenIdConnectAuthorization>> ListAuthorizationsAsync()
-                => (from authorization in Authorizations.Include(authorization => authorization.OpenIdConnectTokens).AsTracking()
-                    where authorization.ClientId == application.Id
-                    select authorization).ToListAsync(cancellationToken);
+            //Task<List<TOpenIdConnectAuthorization>> ListAuthorizationsAsync()
+            //    => (from authorization in Authorizations
+            //        .Include(authorization => authorization.OpenIdConnectTokens)
+            //        .AsTracking()
+            //        where authorization.ClientId == application.Id
+            //        select authorization).ToListAsync(cancellationToken);
 
+            Task<List<TOpenIdConnectToken>> ListTokensByAuthorizationAsync() =>
+                Tokens.Include(a=>a.Authorization).Where(t=>t.Authorization.ClientId == application.Id)
+                
+                .ToListAsync(cancellationToken);
 
 
             Task<List<TOpenIdConnectToken>> ListTokensAsync()
@@ -164,15 +170,15 @@ namespace EAVFW.Extensions.OIDCIdentity
 
             // Remove all the authorizations associated with the application and
             // the tokens attached to these implicit or explicit authorizations.
-            var authorizations = await ListAuthorizationsAsync();
-            foreach (var authorization in authorizations)
+            var authorizations = await ListTokensByAuthorizationAsync();
+            foreach (var authorization in authorizations.GroupBy(c=>c.Authorization))
             {
-                foreach (var token in authorization.OpenIdConnectTokens)
+                foreach (var token in authorization)
                 {
                     Context.Remove(token);
                 }
 
-                Context.Remove(authorization);
+                Context.Remove(authorization.Key);
             }
 
             // Remove all the tokens associated with the application.
