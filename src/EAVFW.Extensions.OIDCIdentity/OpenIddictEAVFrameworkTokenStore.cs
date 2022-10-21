@@ -22,7 +22,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-#nullable enable
 
 namespace EAVFW.Extensions.OIDCIdentity
 {

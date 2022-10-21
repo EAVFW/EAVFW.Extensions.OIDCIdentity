@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Security.Claims;
 
-#nullable enable
+
 
 namespace EAVFW.Extensions.OIDCIdentity
 {

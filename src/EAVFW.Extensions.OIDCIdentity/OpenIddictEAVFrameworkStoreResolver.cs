@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
 using System;
 
-#nullable enable
+
 
 namespace EAVFW.Extensions.OIDCIdentity
 {

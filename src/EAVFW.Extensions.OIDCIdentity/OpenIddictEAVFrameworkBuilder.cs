@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-#nullable enable
+
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
