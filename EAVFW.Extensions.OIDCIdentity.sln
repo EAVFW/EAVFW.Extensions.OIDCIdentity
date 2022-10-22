@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\todo.yml = .github\workflows\todo.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OIDCServer", "samples\OIDCServer\OIDCServer.csproj", "{1CC351A7-ED0A-4677-AE72-1BC305C4C516}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{67716C81-B0A5-46F6-95AA-21D49551E22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{439D1FF2-6639-4C74-A45A-9A9B23543C37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{439D1FF2-6639-4C74-A45A-9A9B23543C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CC351A7-ED0A-4677-AE72-1BC305C4C516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CC351A7-ED0A-4677-AE72-1BC305C4C516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CC351A7-ED0A-4677-AE72-1BC305C4C516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CC351A7-ED0A-4677-AE72-1BC305C4C516}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{67716C81-B0A5-46F6-95AA-21D49551E22A} = {584F293C-BB3A-4F09-856D-17ABC7C9CA2D}
 		{439D1FF2-6639-4C74-A45A-9A9B23543C37} = {584F293C-BB3A-4F09-856D-17ABC7C9CA2D}
 		{1ECC7BBE-62BB-4ECE-AE96-C3230EBE94B8} = {599B499F-018B-4225-81D6-527708493575}
+		{1CC351A7-ED0A-4677-AE72-1BC305C4C516} = {9DFA7BD5-1B2A-40F3-A262-874601892B4A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A162611-9D57-4AD1-8549-C2206EA4F98B}

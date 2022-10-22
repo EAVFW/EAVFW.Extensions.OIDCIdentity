@@ -13,7 +13,8 @@ using System.Threading.Tasks;
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
-    public class ClientManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> : OpenIddictApplicationManager<TOpenIdConnectClient>
+    public class ClientManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> 
+        : OpenIddictApplicationManager<TOpenIdConnectClient>
         where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
         where TOpenIdConnectClientTypes : struct, IConvertible
         where TOpenIdConnectClientConsentTypes : struct, IConvertible
@@ -23,7 +24,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         public ClientManager(IOpenIddictApplicationCache<TOpenIdConnectClient> cache, ILogger<OpenIddictApplicationManager<TOpenIdConnectClient>> logger, IOptionsMonitor<OpenIddictCoreOptions> options, IOpenIddictApplicationStoreResolver resolver) : base(cache, logger, options, resolver)
         {
         }
-
+         
         public new ValueTask<string> ObfuscateClientSecretAsync(string secret, CancellationToken cancellationToken = default)
         {
             return base.ObfuscateClientSecretAsync(secret, cancellationToken);
@@ -32,13 +33,13 @@ namespace EAVFW.Extensions.OIDCIdentity
         public override ValueTask<bool> ValidateClientSecretAsync(TOpenIdConnectClient application, string secret, CancellationToken cancellationToken = default)
         {
             //TODO Validate this implementation
-            return new ValueTask<bool>(true);
+           // return new ValueTask<bool>(true);
             return base.ValidateClientSecretAsync(application, secret, cancellationToken);
         }
         protected override ValueTask<bool> ValidateClientSecretAsync(string secret, string comparand, CancellationToken cancellationToken = default)
         {
             //TODO Validate this implementation
-            return new ValueTask<bool>(true);
+           // return new ValueTask<bool>(true);
             return base.ValidateClientSecretAsync(secret, comparand, cancellationToken);
         }
     }

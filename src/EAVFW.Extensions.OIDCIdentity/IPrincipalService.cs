@@ -131,7 +131,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
         protected ValueTask<ClaimsPrincipal> Create(ClaimsPrincipal principal)
         {
-            return Create(principal);
+            return new ValueTask<ClaimsPrincipal>(principal);
         }
         protected ValueTask<ClaimsPrincipal> CreateFromHttpContextUser()
         {

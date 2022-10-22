@@ -329,14 +329,14 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetClientIdAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetClientIdAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
         {
             if (application is null)
             {
                 throw new ArgumentNullException(nameof(application));
             }
 
-            return new ValueTask<string?>(application.ClientId);
+            return new ValueTask<string>(application.ClientId);
         }
 
         /// <inheritdoc/>
