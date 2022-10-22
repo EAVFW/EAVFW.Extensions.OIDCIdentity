@@ -20,7 +20,12 @@ using static OpenIddict.Server.OpenIddictServerEvents;
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
-
+    public class EAVOpenIdConnectOptions
+    {
+        public bool UseDevelopmentCertificates { get; set; }
+        public string SigningCertificateThumbprint { get; set; }
+        public string EncryptionCertificateThumbprint { get; set; }
+    }
     /// <summary>
     /// Exposes extensions allowing to register the OpenIddict Entity Framework Core services.
     /// </summary>
@@ -42,7 +47,7 @@ namespace EAVFW.Extensions.OIDCIdentity
           TOpenIdConnectTokenType,
           TOpenIdConnectScopeResource,
           TOpenIdConnectResource,
-          TOpenIdConnectScope>(this IServiceCollection services)
+          TOpenIdConnectScope>(this IServiceCollection services, EAVOpenIdConnectOptions options)
               where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
               where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
               where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
@@ -76,7 +81,7 @@ namespace EAVFW.Extensions.OIDCIdentity
           TOpenIdConnectTokenType,
           TOpenIdConnectScopeResource,
           TOpenIdConnectResource,
-          TOpenIdConnectScope>();
+          TOpenIdConnectScope>(options);
         }
             public static OpenIddictBuilder AddOpenIdConnect<TContext, TClientManager,
             TOpenIdConnectAuthorization,
@@ -94,7 +99,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectTokenType,
             TOpenIdConnectScopeResource,
             TOpenIdConnectResource,
-            TOpenIdConnectScope>(this IServiceCollection services)
+            TOpenIdConnectScope>(this IServiceCollection services, EAVOpenIdConnectOptions eavoptions)
                 where TClientManager : EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
                 where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
                 where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
@@ -119,6 +124,7 @@ namespace EAVFW.Extensions.OIDCIdentity
            var b=  services.AddOpenIddict()
                 .AddCore(options =>
                 {
+                    
                     options.UseEAVFramework<TContext,TClientManager,
                         TOpenIdConnectAuthorization,
                         TOpenIdConnectClient,
@@ -155,9 +161,23 @@ namespace EAVFW.Extensions.OIDCIdentity
                     .AllowClientCredentialsFlow()
                     .AllowHybridFlow();
 
-                    options
-                    .AddDevelopmentEncryptionCertificate()
-                    .AddDevelopmentSigningCertificate();
+                    if (eavoptions.UseDevelopmentCertificates)
+                    {
+
+                        options
+                        .AddDevelopmentEncryptionCertificate()
+                        .AddDevelopmentSigningCertificate();
+                    }
+
+                    if(!string.IsNullOrEmpty(eavoptions.EncryptionCertificateThumbprint))
+                    {
+                        options.AddEncryptionCertificate(eavoptions.EncryptionCertificateThumbprint);
+                    }
+                    if (!string.IsNullOrEmpty(eavoptions.SigningCertificateThumbprint))
+                    {
+                        options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint);
+                    }
+
 
                     options.RequireProofKeyForCodeExchange();
 

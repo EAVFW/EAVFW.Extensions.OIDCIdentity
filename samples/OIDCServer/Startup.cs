@@ -43,7 +43,7 @@ namespace OIDCServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOpenIdConnect<DynamicContext, EAVClientManager>();
+            services.AddOpenIdConnect(new EAVOpenIdConnectOptions { UseDevelopmentCertificates=true });
              
 
             services.AddOptions<DynamicContextOptions>().Configure<IWebHostEnvironment>((o, environment) =>
