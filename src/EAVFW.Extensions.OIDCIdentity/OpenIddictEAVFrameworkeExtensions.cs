@@ -171,11 +171,11 @@ namespace EAVFW.Extensions.OIDCIdentity
 
                     if(!string.IsNullOrEmpty(eavoptions.EncryptionCertificateThumbprint))
                     {
-                        options.AddEncryptionCertificate(eavoptions.EncryptionCertificateThumbprint);
+                        options.AddEncryptionCertificate(eavoptions.EncryptionCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
                     }
                     if (!string.IsNullOrEmpty(eavoptions.SigningCertificateThumbprint))
                     {
-                        options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint);
+                        options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
                     }
 
 
