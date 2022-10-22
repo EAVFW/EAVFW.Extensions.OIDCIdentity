@@ -11,7 +11,10 @@ using OpenIddict.Server;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 using static OpenIddict.Server.OpenIddictServerEvents;
@@ -31,6 +34,18 @@ namespace EAVFW.Extensions.OIDCIdentity
     /// </summary>
     public static class OpenIddictEAVFrameworkeExtensions
     {
+        public static X509Certificate2 TryLoadCertificateInAzureLinuxContainerIfFound(string CertificateThumbprint)
+        {
+            if (string.IsNullOrEmpty(CertificateThumbprint))
+                return null;
+
+            string finalPath = $"/var/ssl/private/{CertificateThumbprint}.p12";
+            var bytes2 = File.ReadAllBytes(finalPath);
+            var cert = new X509Certificate2(bytes2);
+
+            return cert;
+
+        }
         public static OpenIddictBuilder AddOpenIdConnect<TContext,
           TOpenIdConnectAuthorization,
           TOpenIdConnectClient,
@@ -171,11 +186,20 @@ namespace EAVFW.Extensions.OIDCIdentity
 
                     if(!string.IsNullOrEmpty(eavoptions.EncryptionCertificateThumbprint))
                     {
-                        options.AddEncryptionCertificate(eavoptions.EncryptionCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                        {
+                            options.AddEncryptionCertificate(TryLoadCertificateInAzureLinuxContainerIfFound(eavoptions.EncryptionCertificateThumbprint));
+                        }else
+                            options.AddEncryptionCertificate(eavoptions.EncryptionCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
                     }
                     if (!string.IsNullOrEmpty(eavoptions.SigningCertificateThumbprint))
                     {
-                        options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                        {
+                            options.AddSigningCertificate(TryLoadCertificateInAzureLinuxContainerIfFound(eavoptions.SigningCertificateThumbprint));
+                        }
+                        else
+                            options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
                     }
 
 
