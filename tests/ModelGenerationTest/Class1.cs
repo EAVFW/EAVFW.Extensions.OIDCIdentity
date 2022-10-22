@@ -14,17 +14,23 @@ namespace ModelGenerationTest
     {
         public Type Test = typeof(OpenIddictEAVFrameworkeExtensions);
     }
-   
+    public class EAVClientManager : EAVApplicationManager<OpenIdConnectClient, AllowedGrantType, OpenIdConnectClientTypes, OpenIdConnectClientConsentTypes, AllowedGrantTypeValue>
+    {
+        public EAVClientManager(IOpenIddictApplicationCache<OpenIdConnectClient> cache, ILogger<OpenIddictApplicationManager<OpenIdConnectClient>> logger, IOptionsMonitor<OpenIddictCoreOptions> options, IOpenIddictApplicationStoreResolver resolver) : base(cache, logger, options, resolver)
+        {
+        }
+    }
+
     public static class Extensions
     {
-        public static void Register<TContext>(this IServiceCollection services) where TContext: DynamicContext
+        public static void AddOpenIdConnect<TContext>(this IServiceCollection services) where TContext: DynamicContext
         {
            services.AddOpenIdConnect<TContext, OpenIdConnectAuthorization, OpenIdConnectClient, AllowedGrantType, AllowedGrantTypeValue, OpenIdConnectClientTypes, OpenIdConnectClientConsentTypes, OpenIdConnectAuthorizationStatus, OpenIdConnectAuthorizationType, OpenIdConnectAuthorizationScope, OpenIdConnectIdentityResource, OpenIdConnectToken, OpenIdConnectTokenStatus, OpenIdConnectTokenType, OpenIdConnectScopeResource, OpenIdConnectResource, OpenIdConnectScope>();
         }
 
-        public static void Register<TContext,TClientManager>(this IServiceCollection services) 
+        public static void AddOpenIdConnect<TContext,TClientManager>(this IServiceCollection services) 
             where TContext : DynamicContext
-            where TClientManager : ClientManager<OpenIdConnectClient, AllowedGrantType, OpenIdConnectClientTypes, OpenIdConnectClientConsentTypes, AllowedGrantTypeValue>
+            where TClientManager : EAVApplicationManager<OpenIdConnectClient, AllowedGrantType, OpenIdConnectClientTypes, OpenIdConnectClientConsentTypes, AllowedGrantTypeValue>
         {
             services.AddOpenIdConnect<TContext,TClientManager, OpenIdConnectAuthorization, OpenIdConnectClient, AllowedGrantType, AllowedGrantTypeValue, OpenIdConnectClientTypes, OpenIdConnectClientConsentTypes, OpenIdConnectAuthorizationStatus, OpenIdConnectAuthorizationType, OpenIdConnectAuthorizationScope, OpenIdConnectIdentityResource, OpenIdConnectToken, OpenIdConnectTokenStatus, OpenIdConnectTokenType, OpenIdConnectScopeResource, OpenIdConnectResource, OpenIdConnectScope>();
         }

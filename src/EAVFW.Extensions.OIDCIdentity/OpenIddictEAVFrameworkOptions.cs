@@ -80,7 +80,7 @@ Reload the authorization from the database and retry the operation.",
         /// OpenIddict Entity Framework Core stores. If this property is not populated,
         /// an exception is thrown at runtime when trying to use the stores.
         /// </summary>
-        public Type? DbContextType { get; set; }
+        public Type DbContextType { get; set; }
 
         public ClaimsPrincipal Principal { get; set; }
     }

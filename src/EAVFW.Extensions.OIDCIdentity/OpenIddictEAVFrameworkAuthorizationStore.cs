@@ -353,7 +353,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask<TOpenIdConnectAuthorization?> FindByIdAsync(string identifier, CancellationToken cancellationToken)
+        public virtual async ValueTask<TOpenIdConnectAuthorization> FindByIdAsync(string identifier, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(identifier))
             {
@@ -384,13 +384,13 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetApplicationIdAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetApplicationIdAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {
                 throw new ArgumentNullException(nameof(authorization));
             }
-            return new ValueTask<string?>(authorization.ClientId?.ToString());
+            return new ValueTask<string>(authorization.ClientId?.ToString());
 
         }
 
@@ -425,14 +425,14 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetIdAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetIdAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {
                 throw new ArgumentNullException(nameof(authorization));
             }
 
-            return new ValueTask<string?>(authorization.Id.ToString());
+            return new ValueTask<string>(authorization.Id.ToString());
         }
 
         /// <inheritdoc/>
@@ -494,36 +494,36 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetStatusAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetStatusAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {
                 throw new ArgumentNullException(nameof(authorization));
             }
 
-            return new ValueTask<string?>(authorization.Status?.ToString().ToLower());
+            return new ValueTask<string>(authorization.Status?.ToString().ToLower());
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetSubjectAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetSubjectAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {
                 throw new ArgumentNullException(nameof(authorization));
             }
 
-            return new ValueTask<string?>(authorization.SubjectId.ToString());
+            return new ValueTask<string>(authorization.SubjectId.ToString());
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetTypeAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetTypeAsync(TOpenIdConnectAuthorization authorization, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {
                 throw new ArgumentNullException(nameof(authorization));
             }
 
-            return new ValueTask<string?>(authorization.Type?.ToString().ToLower());
+            return new ValueTask<string>(authorization.Type?.ToString().ToLower());
         }
 
         /// <inheritdoc/>
@@ -584,7 +584,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             // entities in a single command without having to retrieve and materialize them first.
             // To work around this limitation, entities are manually listed and deleted using a batch logic.
 
-            List<Exception>? exceptions = null;
+            List<Exception> exceptions = null;
 
 
 
@@ -646,7 +646,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 
         /// <inheritdoc/>
         public virtual async ValueTask SetApplicationIdAsync(TOpenIdConnectAuthorization authorization,
-            string? identifier, CancellationToken cancellationToken)
+            string identifier, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {
@@ -768,7 +768,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 
         /// <inheritdoc/>
         public virtual ValueTask SetStatusAsync(TOpenIdConnectAuthorization authorization,
-            string? status, CancellationToken cancellationToken)
+            string status, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {
@@ -782,7 +782,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 
         /// <inheritdoc/>
         public virtual ValueTask SetSubjectAsync(TOpenIdConnectAuthorization authorization,
-            string? subject, CancellationToken cancellationToken)
+            string subject, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {
@@ -796,7 +796,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 
         /// <inheritdoc/>
         public virtual ValueTask SetTypeAsync(TOpenIdConnectAuthorization authorization,
-            string? type, CancellationToken cancellationToken)
+            string type, CancellationToken cancellationToken)
         {
             if (authorization is null)
             {

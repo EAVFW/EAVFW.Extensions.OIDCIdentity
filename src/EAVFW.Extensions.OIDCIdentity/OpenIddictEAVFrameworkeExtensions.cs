@@ -61,7 +61,7 @@ namespace EAVFW.Extensions.OIDCIdentity
        where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
           where TContext : DynamicContext
         {
-            return services.AddOpenIdConnect<TContext, ClientManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>, TOpenIdConnectAuthorization,
+            return services.AddOpenIdConnect<TContext, EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>, TOpenIdConnectAuthorization,
           TOpenIdConnectClient,
           TAllowedGrantType,
           TAllowedGrantTypeValue,
@@ -95,7 +95,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectScopeResource,
             TOpenIdConnectResource,
             TOpenIdConnectScope>(this IServiceCollection services)
-                where TClientManager : ClientManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
+                where TClientManager : EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
                 where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
                 where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
                 where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
@@ -216,7 +216,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
             where TContext : DynamicContext
         {
-            return builder.UseEAVFramework<TContext, ClientManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>, TOpenIdConnectAuthorization,
+            return builder.UseEAVFramework<TContext, EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>, TOpenIdConnectAuthorization,
             TOpenIdConnectClient,
             TAllowedGrantType,
             TAllowedGrantTypeValue,
@@ -259,7 +259,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectScopeResource,
             TOpenIdConnectResource,
             TOpenIdConnectScope>(this OpenIddictCoreBuilder builder)
-            where TClientManager : ClientManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
+            where TClientManager : EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
             where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
             where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
             where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>

@@ -275,7 +275,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask<TOpenIdConnectToken?> FindByIdAsync(string identifier, CancellationToken cancellationToken)
+        public virtual async ValueTask<TOpenIdConnectToken> FindByIdAsync(string identifier, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(identifier))
             {
@@ -290,7 +290,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask<TOpenIdConnectToken?> FindByReferenceIdAsync(string identifier, CancellationToken cancellationToken)
+        public virtual async ValueTask<TOpenIdConnectToken> FindByReferenceIdAsync(string identifier, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(identifier))
             {
@@ -316,19 +316,19 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetApplicationIdAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetApplicationIdAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
         {
             if (token is null)
             {
                 throw new ArgumentNullException(nameof(token));
             }
 
-            return new ValueTask<string?>(token.ClientId.ToString());
+            return new ValueTask<string>(token.ClientId.ToString());
 
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask<TResult?> GetAsync<TState, TResult>(
+        public virtual async ValueTask<TResult> GetAsync<TState, TResult>(
             Func<IQueryable<TOpenIdConnectToken>, TState, IQueryable<TResult>> query,
             TState state, CancellationToken cancellationToken)
         {
@@ -341,14 +341,14 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetAuthorizationIdAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetAuthorizationIdAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
         {
             if (token is null)
             {
                 throw new ArgumentNullException(nameof(token));
             }
 
-            return new ValueTask<string?>(token.AuthorizationId.ToString());
+            return new ValueTask<string>(token.AuthorizationId.ToString());
         }
 
         /// <inheritdoc/>
@@ -384,25 +384,25 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetIdAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetIdAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
         {
             if (token is null)
             {
                 throw new ArgumentNullException(nameof(token));
             }
 
-            return new ValueTask<string?>(token.Id.ToString());
+            return new ValueTask<string>(token.Id.ToString());
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetPayloadAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetPayloadAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
         {
             if (token is null)
             {
                 throw new ArgumentNullException(nameof(token));
             }
 
-            return new ValueTask<string?>(token.Payload);
+            return new ValueTask<string>(token.Payload);
         }
 
         /// <inheritdoc/>
@@ -457,47 +457,47 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetReferenceIdAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetReferenceIdAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
         {
             if (token is null)
             {
                 throw new ArgumentNullException(nameof(token));
             }
 
-            return new ValueTask<string?>(token.ReferenceId.ToString());
+            return new ValueTask<string>(token.ReferenceId.ToString());
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetStatusAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetStatusAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
         {
             if (token is null)
             {
                 throw new ArgumentNullException(nameof(token));
             }
 
-            return new ValueTask<string?>(token.Status.ToString());
+            return new ValueTask<string>(token.Status.ToString());
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetSubjectAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetSubjectAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
         {
             if (token is null)
             {
                 throw new ArgumentNullException(nameof(token));
             }
 
-            return new ValueTask<string?>(token.SubjectId.ToString());
+            return new ValueTask<string>(token.SubjectId.ToString());
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetTypeAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetTypeAsync(TOpenIdConnectToken token, CancellationToken cancellationToken)
         {
             if (token is null)
             {
                 throw new ArgumentNullException(nameof(token));
             }
 
-            return new ValueTask<string?>(token.Type.ToString());
+            return new ValueTask<string>(token.Type.ToString());
         }
 
         /// <inheritdoc/>
@@ -556,9 +556,9 @@ namespace EAVFW.Extensions.OIDCIdentity
             // entities in a single command without having to retrieve and materialize them first.
             // To work around this limitation, entities are manually listed and deleted using a batch logic.
 
-            List<Exception>? exceptions = null;
+            List<Exception> exceptions = null;
 
-            async ValueTask<IDbContextTransaction?> CreateTransactionAsync()
+            async ValueTask<IDbContextTransaction> CreateTransactionAsync()
             {
                 // Note: transactions that specify an explicit isolation level are only supported by
                 // relational providers and trying to use them with a different provider results in
@@ -640,19 +640,21 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask SetApplicationIdAsync(TOpenIdConnectToken token, string? identifier, CancellationToken cancellationToken)
+        public virtual ValueTask SetApplicationIdAsync(TOpenIdConnectToken token, string identifier, CancellationToken cancellationToken)
         {
             if (token is null)
             {
                 throw new ArgumentNullException(nameof(token));
             }
             token.ClientId = identifier == null ? null : Guid.Parse(identifier);
+            return new ValueTask();
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask SetAuthorizationIdAsync(TOpenIdConnectToken token, string? identifier, CancellationToken cancellationToken)
+        public virtual  ValueTask SetAuthorizationIdAsync(TOpenIdConnectToken token, string identifier, CancellationToken cancellationToken)
         {
             token.AuthorizationId = identifier == null ? null : Guid.Parse(identifier);
+            return new ValueTask();
         }
 
         /// <inheritdoc/>
@@ -682,7 +684,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetPayloadAsync(TOpenIdConnectToken token, string? payload, CancellationToken cancellationToken)
+        public virtual ValueTask SetPayloadAsync(TOpenIdConnectToken token, string payload, CancellationToken cancellationToken)
         {
             if (token is null)
             {
@@ -747,7 +749,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetReferenceIdAsync(TOpenIdConnectToken token, string? identifier, CancellationToken cancellationToken)
+        public virtual ValueTask SetReferenceIdAsync(TOpenIdConnectToken token, string identifier, CancellationToken cancellationToken)
         {
             if (token is null)
             {
@@ -760,7 +762,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetStatusAsync(TOpenIdConnectToken token, string? status, CancellationToken cancellationToken)
+        public virtual ValueTask SetStatusAsync(TOpenIdConnectToken token, string status, CancellationToken cancellationToken)
         {
             if (token is null)
             {
@@ -773,7 +775,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetSubjectAsync(TOpenIdConnectToken token, string? subject, CancellationToken cancellationToken)
+        public virtual ValueTask SetSubjectAsync(TOpenIdConnectToken token, string subject, CancellationToken cancellationToken)
         {
             if (token is null)
             {
@@ -786,7 +788,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetTypeAsync(TOpenIdConnectToken token, string? type, CancellationToken cancellationToken)
+        public virtual ValueTask SetTypeAsync(TOpenIdConnectToken token, string type, CancellationToken cancellationToken)
         {
             if (token is null)
             {

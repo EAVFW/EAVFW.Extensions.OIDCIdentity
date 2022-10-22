@@ -158,7 +158,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask<TOpenIdConnectScope?> FindByIdAsync(string identifier, CancellationToken cancellationToken)
+        public virtual async ValueTask<TOpenIdConnectScope> FindByIdAsync(string identifier, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(identifier))
             {
@@ -172,7 +172,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask<TOpenIdConnectScope?> FindByNameAsync(string name, CancellationToken cancellationToken)
+        public virtual async ValueTask<TOpenIdConnectScope> FindByNameAsync(string name, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -217,7 +217,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 
             return ExecuteAsync(cancellationToken);
 
-            IAsyncEnumerable<TOpenIdConnectScope> ExecuteAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+            IAsyncEnumerable<TOpenIdConnectScope> ExecuteAsync( CancellationToken cancellationToken)
             {
                 var scopes = (from scope in Loader
                               where scope.OpenIdConnectScopeResources.Any(s => s.Resource.Name == resource)
@@ -248,14 +248,14 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetDescriptionAsync(TOpenIdConnectScope scope, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetDescriptionAsync(TOpenIdConnectScope scope, CancellationToken cancellationToken)
         {
             if (scope is null)
             {
                 throw new ArgumentNullException(nameof(scope));
             }
 
-            return new ValueTask<string?>(scope.Description);
+            return new ValueTask<string>(scope.Description);
         }
 
         /// <inheritdoc/>
@@ -270,14 +270,14 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetDisplayNameAsync(TOpenIdConnectScope scope, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetDisplayNameAsync(TOpenIdConnectScope scope, CancellationToken cancellationToken)
         {
             if (scope is null)
             {
                 throw new ArgumentNullException(nameof(scope));
             }
 
-            return new ValueTask<string?>(scope.DisplayName);
+            return new ValueTask<string>(scope.DisplayName);
         }
 
         /// <inheritdoc/>
@@ -291,25 +291,25 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetIdAsync(TOpenIdConnectScope scope, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetIdAsync(TOpenIdConnectScope scope, CancellationToken cancellationToken)
         {
             if (scope is null)
             {
                 throw new ArgumentNullException(nameof(scope));
             }
 
-            return new ValueTask<string?>(scope.Id.ToString());
+            return new ValueTask<string>(scope.Id.ToString());
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetNameAsync(TOpenIdConnectScope scope, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetNameAsync(TOpenIdConnectScope scope, CancellationToken cancellationToken)
         {
             if (scope is null)
             {
                 throw new ArgumentNullException(nameof(scope));
             }
 
-            return new ValueTask<string?>(scope.Name);
+            return new ValueTask<string>(scope.Name);
         }
 
         /// <inheritdoc/>
@@ -405,7 +405,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetDescriptionAsync(TOpenIdConnectScope scope, string? description, CancellationToken cancellationToken)
+        public virtual ValueTask SetDescriptionAsync(TOpenIdConnectScope scope, string description, CancellationToken cancellationToken)
         {
             if (scope is null)
             {
@@ -432,7 +432,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetDisplayNameAsync(TOpenIdConnectScope scope, string? name, CancellationToken cancellationToken)
+        public virtual ValueTask SetDisplayNameAsync(TOpenIdConnectScope scope, string name, CancellationToken cancellationToken)
         {
             if (scope is null)
             {
@@ -459,7 +459,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetNameAsync(TOpenIdConnectScope scope, string? name, CancellationToken cancellationToken)
+        public virtual ValueTask SetNameAsync(TOpenIdConnectScope scope, string name, CancellationToken cancellationToken)
         {
             if (scope is null)
             {

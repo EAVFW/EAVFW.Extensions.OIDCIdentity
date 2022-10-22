@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
-    public class ClientManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> 
+    public class EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> 
         : OpenIddictApplicationManager<TOpenIdConnectClient>
         where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
         where TOpenIdConnectClientTypes : struct, IConvertible
@@ -21,7 +21,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         where TAllowedGrantTypeValue : struct, IConvertible
         where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
     {
-        public ClientManager(IOpenIddictApplicationCache<TOpenIdConnectClient> cache, ILogger<OpenIddictApplicationManager<TOpenIdConnectClient>> logger, IOptionsMonitor<OpenIddictCoreOptions> options, IOpenIddictApplicationStoreResolver resolver) : base(cache, logger, options, resolver)
+        public EAVApplicationManager(IOpenIddictApplicationCache<TOpenIdConnectClient> cache, ILogger<OpenIddictApplicationManager<TOpenIdConnectClient>> logger, IOptionsMonitor<OpenIddictCoreOptions> options, IOpenIddictApplicationStoreResolver resolver) : base(cache, logger, options, resolver)
         {
         }
          

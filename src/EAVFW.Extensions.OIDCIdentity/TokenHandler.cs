@@ -20,9 +20,9 @@ namespace EAVFW.Extensions.OIDCIdentity
         where TOpenIdConnectClientConsentTypes : struct, IConvertible
         where TAllowedGrantTypeValue : struct, IConvertible
         where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
-        where TClientManager : ClientManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
+        where TClientManager : EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
     {
-        private readonly ClientManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> _applicationManager;
+        private readonly EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> _applicationManager;
         private readonly IOpenIddictScopeManager _scopeManager;
         public TokenHandler(TClientManager applicationManager, IOpenIddictScopeManager scopeManager)
         {

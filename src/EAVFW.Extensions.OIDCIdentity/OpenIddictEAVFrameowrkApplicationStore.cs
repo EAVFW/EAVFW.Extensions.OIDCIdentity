@@ -220,7 +220,7 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask<TOpenIdConnectClient?> FindByClientIdAsync(string identifier, CancellationToken cancellationToken)
+        public virtual async ValueTask<TOpenIdConnectClient> FindByClientIdAsync(string identifier, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(identifier))
             {
@@ -233,7 +233,7 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual async ValueTask<TOpenIdConnectClient?> FindByIdAsync(string identifier, CancellationToken cancellationToken)
+        public virtual async ValueTask<TOpenIdConnectClient> FindByIdAsync(string identifier, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(identifier))
             {
@@ -340,47 +340,47 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetClientSecretAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetClientSecretAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
         {
             if (application is null)
             {
                 throw new ArgumentNullException(nameof(application));
             }
 
-            return new ValueTask<string?>(application.ClientSecret);
+            return new ValueTask<string>(application.ClientSecret);
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetClientTypeAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetClientTypeAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
         {
             if (application is null)
             {
                 throw new ArgumentNullException(nameof(application));
             }
 
-            return new ValueTask<string?>(application.Type.ToString()?.ToLower());
+            return new ValueTask<string>(application.Type.ToString()?.ToLower());
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetConsentTypeAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetConsentTypeAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
         {
             if (application is null)
             {
                 throw new ArgumentNullException(nameof(application));
             }
 
-            return new ValueTask<string?>(application.ConsentType.ToString().ToLower());
+            return new ValueTask<string>(application.ConsentType.ToString().ToLower());
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetDisplayNameAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetDisplayNameAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
         {
             if (application is null)
             {
                 throw new ArgumentNullException(nameof(application));
             }
 
-            return new ValueTask<string?>(application.Name);
+            return new ValueTask<string>(application.Name);
         }
 
         /// <inheritdoc/>
@@ -427,14 +427,14 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask<string?> GetIdAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
+        public virtual ValueTask<string> GetIdAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
         {
             if (application is null)
             {
                 throw new ArgumentNullException(nameof(application));
             }
 
-            return new ValueTask<string?>(application.Id.ToString());
+            return new ValueTask<string>(application.Id.ToString());
         }
 
         protected static Dictionary<TAllowedGrantTypeValue?, string[]> AuthorizationCode = new Dictionary<TAllowedGrantTypeValue?, string[]>
@@ -714,7 +714,7 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetClientIdAsync(TOpenIdConnectClient application, string? identifier, CancellationToken cancellationToken)
+        public virtual ValueTask SetClientIdAsync(TOpenIdConnectClient application, string identifier, CancellationToken cancellationToken)
         {
             if (application is null)
             {
@@ -727,7 +727,7 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetClientSecretAsync(TOpenIdConnectClient application, string? secret, CancellationToken cancellationToken)
+        public virtual ValueTask SetClientSecretAsync(TOpenIdConnectClient application, string secret, CancellationToken cancellationToken)
         {
             if (application is null)
             {
@@ -740,7 +740,7 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetClientTypeAsync(TOpenIdConnectClient application, string? type, CancellationToken cancellationToken)
+        public virtual ValueTask SetClientTypeAsync(TOpenIdConnectClient application, string type, CancellationToken cancellationToken)
         {
             if (application is null)
             {
@@ -755,7 +755,7 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetConsentTypeAsync(TOpenIdConnectClient application, string? type, CancellationToken cancellationToken)
+        public virtual ValueTask SetConsentTypeAsync(TOpenIdConnectClient application, string type, CancellationToken cancellationToken)
         {
             if (application is null)
             {
@@ -769,7 +769,7 @@ Reload the application from the database and retry the operation.", exception);
         }
 
         /// <inheritdoc/>
-        public virtual ValueTask SetDisplayNameAsync(TOpenIdConnectClient application, string? name, CancellationToken cancellationToken)
+        public virtual ValueTask SetDisplayNameAsync(TOpenIdConnectClient application, string name, CancellationToken cancellationToken)
         {
             if (application is null)
             {

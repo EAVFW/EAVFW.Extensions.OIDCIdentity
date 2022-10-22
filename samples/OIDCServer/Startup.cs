@@ -29,12 +29,7 @@ using System.Security.Claims;
 
 namespace OIDCServer
 {
-    public class EAVClientManager : ClientManager<OpenIdConnectClient, AllowedGrantType, OpenIdConnectClientTypes, OpenIdConnectClientConsentTypes, AllowedGrantTypeValue>
-    {
-        public EAVClientManager(IOpenIddictApplicationCache<OpenIdConnectClient> cache, ILogger<OpenIddictApplicationManager<OpenIdConnectClient>> logger, IOptionsMonitor<OpenIddictCoreOptions> options, IOpenIddictApplicationStoreResolver resolver) : base(cache, logger, options, resolver)
-        {
-        }
-    }
+   
 
     public class Startup
     {
@@ -48,7 +43,7 @@ namespace OIDCServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Register<DynamicContext, EAVClientManager>();
+            services.AddOpenIdConnect<DynamicContext, EAVClientManager>();
              
 
             services.AddOptions<DynamicContextOptions>().Configure<IWebHostEnvironment>((o, environment) =>
