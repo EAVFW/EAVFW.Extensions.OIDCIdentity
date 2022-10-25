@@ -64,7 +64,7 @@ namespace EAVFW.Extensions.OIDCIdentity
           TOpenIdConnectResource,
           TOpenIdConnectScope>(this IServiceCollection services, EAVOpenIdConnectOptions options)
               where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
-              where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+              where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
               where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
               where TAllowedGrantTypeValue : struct, IConvertible
               where TOpenIdConnectClientTypes : struct, IConvertible
@@ -117,7 +117,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectScope>(this IServiceCollection services, EAVOpenIdConnectOptions eavoptions)
                 where TClientManager : EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
                 where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
-                where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+                where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
                 where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
                 where TAllowedGrantTypeValue : struct, IConvertible
                 where TOpenIdConnectClientTypes : struct, IConvertible
@@ -243,7 +243,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectScope>(this OpenIddictCoreBuilder builder)
 
             where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
-            where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+            where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
             where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
             where TAllowedGrantTypeValue : struct, IConvertible
             where TOpenIdConnectClientTypes : struct, IConvertible
@@ -305,7 +305,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectScope>(this OpenIddictCoreBuilder builder)
             where TClientManager : EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
             where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
-            where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+            where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
             where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
             where TAllowedGrantTypeValue : struct, IConvertible
             where TOpenIdConnectClientTypes : struct, IConvertible
@@ -497,7 +497,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectScope>(
             this OpenIddictCoreBuilder builder, Action<OpenIddictEAVFrameworkBuilder> configuration)
             where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient,  TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
-            where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+            where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
             where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
             where TAllowedGrantTypeValue : struct, IConvertible
             where TOpenIdConnectClientTypes : struct, IConvertible

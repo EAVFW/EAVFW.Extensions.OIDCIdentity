@@ -12,7 +12,7 @@ namespace EAVFW.Extensions.OIDCIdentity
     public class OIDConnectStore<TContext, TOpenIdConnectClient, TOpenIdConnectAuthorization, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType, TOpenIdConnectToken,
         TOpenIdConnectTokenType, TOpenIdConnectTokenStatus, TAllowedGrantType, TOpenIdConnectAuthorizationScope, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes,
         TAllowedGrantTypeValue, TOpenIdConnectScope, TOpenIdConnectScopeResource, TOpenIdConnectResource, TOpenIdConnectIdentityResource>
-        where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+        where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
         where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient,TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
         where TOpenIdConnectAuthorizationStatus : struct, IConvertible
         where TOpenIdConnectToken : DynamicEntity, IOpenIdConnectToken<TOpenIdConnectClient, TOpenIdConnectAuthorization, TOpenIdConnectTokenStatus, TOpenIdConnectTokenType>
@@ -98,6 +98,11 @@ namespace EAVFW.Extensions.OIDCIdentity
         /// Gets the database set corresponding to the <typeparamref name="TApplication"/> entity.
         /// </summary>
         protected DbSet<TOpenIdConnectClient> Applications => Context.Set<TOpenIdConnectClient>();
+
+        /// <summary>
+        /// Gets the database set corresponding to the <typeparamref name="TApplication"/> entity.
+        /// </summary>
+        protected DbSet<TAllowedGrantType> AllowedGrantTypes => Context.Set<TAllowedGrantType>();
 
         /// <summary>
         /// Gets the database set corresponding to the <typeparamref name="TAuthorization"/> entity.

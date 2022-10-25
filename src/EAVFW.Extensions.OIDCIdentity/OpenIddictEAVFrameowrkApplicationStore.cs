@@ -60,7 +60,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         >,
         IOpenIddictApplicationStore<TOpenIdConnectClient>
 
-        where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+        where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
         where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
         where TOpenIdConnectAuthorizationStatus : struct, IConvertible
         where TOpenIdConnectToken : DynamicEntity, IOpenIdConnectToken<TOpenIdConnectClient, TOpenIdConnectAuthorization, TOpenIdConnectTokenStatus, TOpenIdConnectTokenType>
@@ -104,7 +104,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         }
 
 
-        private IQueryable<TOpenIdConnectClient> Loader => Applications.Include(c => c.AllowedGrantTypes).AsTracking();
+        private IQueryable<TOpenIdConnectClient> Loader => Applications.Include("AllowedGrantTypes").AsTracking();
         /// <inheritdoc/>
         public virtual async ValueTask<long> CountAsync(CancellationToken cancellationToken)
             => await Applications.AsQueryable().LongCountAsync(cancellationToken);
@@ -451,6 +451,7 @@ Reload the application from the database and retry the operation.", exception);
 
         };
 
+
         /// <inheritdoc/>
         public virtual ValueTask<ImmutableArray<string>> GetPermissionsAsync(TOpenIdConnectClient application, CancellationToken cancellationToken)
         {
@@ -459,7 +460,9 @@ Reload the application from the database and retry the operation.", exception);
                 throw new ArgumentNullException(nameof(application));
             }
 
-            var permissions = application.AllowedGrantTypes.SelectMany(g =>
+            var grants = typeof(TOpenIdConnectClient).GetProperty("AllowedGrantTypes").GetValue(application) as ICollection<TAllowedGrantType>;
+
+            var permissions = grants.SelectMany(g =>
                 AuthorizationCode.ContainsKey(g.AllowedGrantTypeValue) ?
                 AuthorizationCode[g.AllowedGrantTypeValue] : new string[] { OpenIddictConstants.Permissions.Prefixes.GrantType + g.AllowedGrantTypeValue.ToString()?.ToLower() });
 

@@ -15,7 +15,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 {
     public class EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> 
         : OpenIddictApplicationManager<TOpenIdConnectClient>
-        where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+        where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
         where TOpenIdConnectClientTypes : struct, IConvertible
         where TOpenIdConnectClientConsentTypes : struct, IConvertible
         where TAllowedGrantTypeValue : struct, IConvertible
