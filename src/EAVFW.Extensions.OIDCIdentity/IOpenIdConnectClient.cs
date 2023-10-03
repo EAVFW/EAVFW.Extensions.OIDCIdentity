@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
-    
+
     [EntityInterface(EntityKey = "OpenId Connect Client")]
     [ConstraintMapping(AttributeKey = "Consent Type", ConstraintName = "TOpenIdConnectClientConsentTypes")]
     [ConstraintMapping(AttributeKey = "Type", ConstraintName = "TOpenIdConnectClientTypes")]

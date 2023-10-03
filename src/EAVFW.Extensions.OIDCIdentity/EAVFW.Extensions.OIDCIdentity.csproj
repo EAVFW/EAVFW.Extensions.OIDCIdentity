@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<LangVersion>9.0</LangVersion>
-		<TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks> 
+		<TargetFrameworks>net6.0</TargetFrameworks> 
 		<Nullable>disable</Nullable>
 		<Title>EAVFW.Extensions.OIDCIdentity</Title>
 		<Authors>Poul Kjeldager</Authors>
@@ -32,14 +32,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="OpenIddict.Core" Version="3.1.1" />
-		<PackageReference Include="OpenIddict.Server" Version="3.1.1" />
-		<PackageReference Include="OpenIddict.Server.AspNetCore" Version="3.1.1" />
+		<PackageReference Include="OpenIddict.Core" Version="4.8.0" />
+		<PackageReference Include="OpenIddict.Server" Version="4.8.0" />
+		<PackageReference Include="OpenIddict.Server.AspNetCore" Version="4.8.0" />
 	</ItemGroup>
 	<ItemGroup Condition="$(RemoteEAVFramework) == 'false'">
 		<ProjectReference Include="$(LocalEAVFrameworkPath)\src\EAVFramework.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="$(RemoteEAVFramework) != 'false'">
-		<PackageReference Include="EAVFramework" Version="$(EAVFrameworkVersion)" />
+    <PackageReference Include="EAVFramework" Version="2.3.1" />
 	</ItemGroup>
+
+
 </Project>

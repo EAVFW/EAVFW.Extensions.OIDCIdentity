@@ -1,6 +1,5 @@
 using EAVFramework;
-
-
+using EAVFW.Extensions.OIDCIdentity.Plugins;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -49,6 +48,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         public static OpenIddictBuilder AddOpenIdConnect<TContext,
           TOpenIdConnectAuthorization,
           TOpenIdConnectClient,
+          TOpenIdConnectSecret,
           TAllowedGrantType,
           TAllowedGrantTypeValue,
           TOpenIdConnectClientTypes,
@@ -65,6 +65,7 @@ namespace EAVFW.Extensions.OIDCIdentity
           TOpenIdConnectScope>(this IServiceCollection services, EAVOpenIdConnectOptions options)
               where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
               where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+              where TOpenIdConnectSecret : DynamicEntity, IOpenIdConnectSecret
               where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
               where TAllowedGrantTypeValue : struct, IConvertible
               where TOpenIdConnectClientTypes : struct, IConvertible
@@ -81,8 +82,9 @@ namespace EAVFW.Extensions.OIDCIdentity
        where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
           where TContext : DynamicContext
         {
-            return services.AddOpenIdConnect<TContext, EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>, TOpenIdConnectAuthorization,
+            return services.AddOpenIdConnect<TContext, EAVApplicationManager<TContext,TOpenIdConnectClient,TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>, TOpenIdConnectAuthorization,
           TOpenIdConnectClient,
+          TOpenIdConnectSecret,
           TAllowedGrantType,
           TAllowedGrantTypeValue,
           TOpenIdConnectClientTypes,
@@ -98,124 +100,165 @@ namespace EAVFW.Extensions.OIDCIdentity
           TOpenIdConnectResource,
           TOpenIdConnectScope>(options);
         }
-            public static OpenIddictBuilder AddOpenIdConnect<TContext, TClientManager,
-            TOpenIdConnectAuthorization,
-            TOpenIdConnectClient,
-            TAllowedGrantType,
-            TAllowedGrantTypeValue,
-            TOpenIdConnectClientTypes,
-            TOpenIdConnectClientConsentTypes,
-            TOpenIdConnectAuthorizationStatus,
-            TOpenIdConnectAuthorizationType,
-            TOpenIdConnectAuthorizationScope,
-            TOpenIdConnectIdentityResource,
-            TOpenIdConnectToken,
-            TOpenIdConnectTokenStatus,
-            TOpenIdConnectTokenType,
-            TOpenIdConnectScopeResource,
-            TOpenIdConnectResource,
-            TOpenIdConnectScope>(this IServiceCollection services, EAVOpenIdConnectOptions eavoptions)
-                where TClientManager : EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
-                where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
-                where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
-                where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
-                where TAllowedGrantTypeValue : struct, IConvertible
-                where TOpenIdConnectClientTypes : struct, IConvertible
-                where TOpenIdConnectClientConsentTypes : struct, IConvertible
-                where TOpenIdConnectAuthorizationStatus : struct, IConvertible
-                where TOpenIdConnectAuthorizationType : struct, IConvertible
-                where TOpenIdConnectAuthorizationScope : DynamicEntity, IOpenIdConnectAuthorizationScope<TOpenIdConnectIdentityResource>, new()
-                where TOpenIdConnectIdentityResource : DynamicEntity, IOpenIdConnectIdentityResource
-                where TOpenIdConnectToken : DynamicEntity, IOpenIdConnectToken<TOpenIdConnectClient, TOpenIdConnectAuthorization, TOpenIdConnectTokenStatus, TOpenIdConnectTokenType>
-                where TOpenIdConnectTokenStatus : struct, IConvertible
-                where TOpenIdConnectTokenType : struct, IConvertible
-              where TOpenIdConnectScopeResource : DynamicEntity, IOpenIdConnectScopeResource<TOpenIdConnectResource, TOpenIdConnectIdentityResource>, new()
-            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource
-         where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
-            where TContext : DynamicContext
+        public static OpenIddictBuilder AddOpenIdConnect<TContext, TClientManager,
+        TOpenIdConnectAuthorization,
+        TOpenIdConnectClient,
+        TOpenIdConnectSecret,
+        TAllowedGrantType,
+        TAllowedGrantTypeValue,
+        TOpenIdConnectClientTypes,
+        TOpenIdConnectClientConsentTypes,
+        TOpenIdConnectAuthorizationStatus,
+        TOpenIdConnectAuthorizationType,
+        TOpenIdConnectAuthorizationScope,
+        TOpenIdConnectIdentityResource,
+        TOpenIdConnectToken,
+        TOpenIdConnectTokenStatus,
+        TOpenIdConnectTokenType,
+        TOpenIdConnectScopeResource,
+        TOpenIdConnectResource,
+        TOpenIdConnectScope>(this IServiceCollection services, EAVOpenIdConnectOptions eavoptions)
+            where TClientManager : EAVApplicationManager<TContext,TOpenIdConnectClient, TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
+            where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
+            where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+            where TOpenIdConnectSecret : DynamicEntity, IOpenIdConnectSecret
+            where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
+            where TAllowedGrantTypeValue : struct, IConvertible
+            where TOpenIdConnectClientTypes : struct, IConvertible
+            where TOpenIdConnectClientConsentTypes : struct, IConvertible
+            where TOpenIdConnectAuthorizationStatus : struct, IConvertible
+            where TOpenIdConnectAuthorizationType : struct, IConvertible
+            where TOpenIdConnectAuthorizationScope : DynamicEntity, IOpenIdConnectAuthorizationScope<TOpenIdConnectIdentityResource>, new()
+            where TOpenIdConnectIdentityResource : DynamicEntity, IOpenIdConnectIdentityResource
+            where TOpenIdConnectToken : DynamicEntity, IOpenIdConnectToken<TOpenIdConnectClient, TOpenIdConnectAuthorization, TOpenIdConnectTokenStatus, TOpenIdConnectTokenType>
+            where TOpenIdConnectTokenStatus : struct, IConvertible
+            where TOpenIdConnectTokenType : struct, IConvertible
+          where TOpenIdConnectScopeResource : DynamicEntity, IOpenIdConnectScopeResource<TOpenIdConnectResource, TOpenIdConnectIdentityResource>, new()
+        where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource
+     where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
+        where TContext : DynamicContext
         {
+            services.AddPlugin<ValidateCreateApplicationPlugin<TContext, TClientManager,
+                    TOpenIdConnectAuthorization,
+                    TOpenIdConnectClient,
+                    TOpenIdConnectSecret,
+                    TAllowedGrantType,
+                    TAllowedGrantTypeValue,
+                    TOpenIdConnectClientTypes,
+                    TOpenIdConnectClientConsentTypes,
+                    TOpenIdConnectAuthorizationStatus,
+                    TOpenIdConnectAuthorizationType,
+                    TOpenIdConnectAuthorizationScope,
+                    TOpenIdConnectIdentityResource,
+                    TOpenIdConnectToken,
+                    TOpenIdConnectTokenStatus,
+                    TOpenIdConnectTokenType,
+                    TOpenIdConnectScopeResource,
+                    TOpenIdConnectResource,
+                    TOpenIdConnectScope>>();
+
+            services.AddPlugin<ObfuscateSecretPlugin<TContext, TClientManager,
+                   TOpenIdConnectAuthorization,
+                   TOpenIdConnectClient,
+                   TOpenIdConnectSecret,
+                   TAllowedGrantType,
+                   TAllowedGrantTypeValue,
+                   TOpenIdConnectClientTypes,
+                   TOpenIdConnectClientConsentTypes,
+                   TOpenIdConnectAuthorizationStatus,
+                   TOpenIdConnectAuthorizationType,
+                   TOpenIdConnectAuthorizationScope,
+                   TOpenIdConnectIdentityResource,
+                   TOpenIdConnectToken,
+                   TOpenIdConnectTokenStatus,
+                   TOpenIdConnectTokenType,
+                   TOpenIdConnectScopeResource,
+                   TOpenIdConnectResource,
+                   TOpenIdConnectScope>>();
 
 
-           var b=  services.AddOpenIddict()
-                .AddCore(options =>
-                {
-                    
-                    options.UseEAVFramework<TContext,TClientManager,
-                        TOpenIdConnectAuthorization,
-                        TOpenIdConnectClient,
-                        TAllowedGrantType,
-                        TAllowedGrantTypeValue,
-                        TOpenIdConnectClientTypes,
-                        TOpenIdConnectClientConsentTypes,
-                        TOpenIdConnectAuthorizationStatus,
-                        TOpenIdConnectAuthorizationType,
-                        TOpenIdConnectAuthorizationScope,
-                        TOpenIdConnectIdentityResource,
-                        TOpenIdConnectToken,
-                        TOpenIdConnectTokenStatus,
-                        TOpenIdConnectTokenType,
-                        TOpenIdConnectScopeResource,
-                        TOpenIdConnectResource,
-                        TOpenIdConnectScope>();
+            var b = services.AddOpenIddict()
+                 .AddCore(options =>
+                 {
 
-                }).AddServer(options =>
-                {
+                     options.UseEAVFramework<TContext, TClientManager,
+                         TOpenIdConnectAuthorization,
+                         TOpenIdConnectClient,
+                         TOpenIdConnectSecret,
+                         TAllowedGrantType,
+                         TAllowedGrantTypeValue,
+                         TOpenIdConnectClientTypes,
+                         TOpenIdConnectClientConsentTypes,
+                         TOpenIdConnectAuthorizationStatus,
+                         TOpenIdConnectAuthorizationType,
+                         TOpenIdConnectAuthorizationScope,
+                         TOpenIdConnectIdentityResource,
+                         TOpenIdConnectToken,
+                         TOpenIdConnectTokenStatus,
+                         TOpenIdConnectTokenType,
+                         TOpenIdConnectScopeResource,
+                         TOpenIdConnectResource,
+                         TOpenIdConnectScope>();
 
-                    options
-                    .SetAuthorizationEndpointUris("/connect/authorize")
-                    .SetDeviceEndpointUris("/connect/device")
-                    .SetLogoutEndpointUris("/connect/logout")
-                    .SetTokenEndpointUris("/connect/token")
-                    .SetUserinfoEndpointUris("/connect/userinfo")
-                    .SetVerificationEndpointUris("/connect/verify");
+                 }).AddServer(options =>
+                 {
 
-                    options.AllowAuthorizationCodeFlow()
-                    .AllowDeviceCodeFlow()
-                    .AllowPasswordFlow()
-                    .AllowRefreshTokenFlow()
-                    .AllowClientCredentialsFlow()
-                    .AllowHybridFlow();
+                     options
+                     .SetAuthorizationEndpointUris("/connect/authorize")
+                     .SetDeviceEndpointUris("/connect/device")
+                     .SetLogoutEndpointUris("/connect/logout")
+                     .SetTokenEndpointUris("/connect/token")
+                     .SetUserinfoEndpointUris("/connect/userinfo")
+                     .SetVerificationEndpointUris("/connect/verify");
 
-                    if (eavoptions.UseDevelopmentCertificates)
-                    {
+                     options.AllowAuthorizationCodeFlow()
+                     .AllowDeviceCodeFlow()
+                     .AllowPasswordFlow()
+                     .AllowRefreshTokenFlow()
+                     .AllowClientCredentialsFlow()
+                     .AllowHybridFlow();
 
-                        options
-                        .AddDevelopmentEncryptionCertificate()
-                        .AddDevelopmentSigningCertificate();
-                    }
+                     if (eavoptions.UseDevelopmentCertificates)
+                     {
 
-                    if(!string.IsNullOrEmpty(eavoptions.EncryptionCertificateThumbprint))
-                    {
-                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                        {
-                            options.AddEncryptionCertificate(TryLoadCertificateInAzureLinuxContainerIfFound(eavoptions.EncryptionCertificateThumbprint));
-                        }else
-                            options.AddEncryptionCertificate(eavoptions.EncryptionCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
-                    }
-                    if (!string.IsNullOrEmpty(eavoptions.SigningCertificateThumbprint))
-                    {
-                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                        {
-                            options.AddSigningCertificate(TryLoadCertificateInAzureLinuxContainerIfFound(eavoptions.SigningCertificateThumbprint));
-                        }
-                        else
-                            options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
-                    }
+                         options
+                         .AddDevelopmentEncryptionCertificate()
+                         .AddDevelopmentSigningCertificate();
+                     }
+
+                     if (!string.IsNullOrEmpty(eavoptions.EncryptionCertificateThumbprint))
+                     {
+                         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                         {
+                             options.AddEncryptionCertificate(TryLoadCertificateInAzureLinuxContainerIfFound(eavoptions.EncryptionCertificateThumbprint));
+                         }
+                         else
+                             options.AddEncryptionCertificate(eavoptions.EncryptionCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
+                     }
+                     if (!string.IsNullOrEmpty(eavoptions.SigningCertificateThumbprint))
+                     {
+                         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                         {
+                             options.AddSigningCertificate(TryLoadCertificateInAzureLinuxContainerIfFound(eavoptions.SigningCertificateThumbprint));
+                         }
+                         else
+                             options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
+                     }
 
 
-                    options.RequireProofKeyForCodeExchange();
+                     options.RequireProofKeyForCodeExchange();
 
-                    options.UseAspNetCore()
-                    .EnableStatusCodePagesIntegration()
-                    .EnableAuthorizationEndpointPassthrough()
-                    .EnableLogoutEndpointPassthrough()
-                    .EnableUserinfoEndpointPassthrough()
-                    .EnableVerificationEndpointPassthrough()
-                    .DisableTransportSecurityRequirement();
+                     options.UseAspNetCore()
+                     .EnableStatusCodePagesIntegration()
+                     .EnableAuthorizationEndpointPassthrough()
+                     .EnableLogoutEndpointPassthrough()
+                     .EnableUserinfoEndpointPassthrough()
+                     .EnableVerificationEndpointPassthrough()
+                     .DisableTransportSecurityRequirement();
 
-                    options.AddEventHandler<HandleTokenRequestContext>(c => c.UseScopedHandler<TokenHandler<TClientManager,TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>>());
-                });
-                services.AddScoped<IOpenIddictServerFactory, OpenIddictServerFactory>();
+                     options.AddEventHandler<HandleTokenRequestContext>(c => c.UseScopedHandler<TokenHandler<TContext,TClientManager, TOpenIdConnectClient, TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>>());
+                 });
+            services.AddScoped<IOpenIddictServerFactory, OpenIddictServerFactory>();
 
             return b;
 
@@ -227,6 +270,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             TContext,
             TOpenIdConnectAuthorization,
             TOpenIdConnectClient,
+            TOpenIdConnectSecret,
             TAllowedGrantType,
             TAllowedGrantTypeValue,
             TOpenIdConnectClientTypes,
@@ -244,6 +288,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 
             where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
             where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+            where TOpenIdConnectSecret : DynamicEntity, IOpenIdConnectSecret
             where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
             where TAllowedGrantTypeValue : struct, IConvertible
             where TOpenIdConnectClientTypes : struct, IConvertible
@@ -260,8 +305,9 @@ namespace EAVFW.Extensions.OIDCIdentity
             where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
             where TContext : DynamicContext
         {
-            return builder.UseEAVFramework<TContext, EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>, TOpenIdConnectAuthorization,
+            return builder.UseEAVFramework<TContext, EAVApplicationManager<TContext,TOpenIdConnectClient,TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>, TOpenIdConnectAuthorization,
             TOpenIdConnectClient,
+            TOpenIdConnectSecret,
             TAllowedGrantType,
             TAllowedGrantTypeValue,
             TOpenIdConnectClientTypes,
@@ -277,50 +323,52 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectResource,
             TOpenIdConnectScope>();
         }
-            /// <summary>
-            /// Registers the Entity Framework Core stores services in the DI container and
-            /// configures OpenIddict to use the Entity Framework Core entities by default.
-            /// </summary>
-            /// <param name="builder">The services builder used by OpenIddict to register new services.</param>
-            /// <remarks>This extension can be safely called multiple times.</remarks>
-            /// <returns>The <see cref="OpenIddictEAVFrameworkBuilder"/>.</returns>
-            public static OpenIddictEAVFrameworkBuilder UseEAVFramework<
-            TContext,
-            TClientManager,
-            TOpenIdConnectAuthorization,
-            TOpenIdConnectClient,
-            TAllowedGrantType,
-            TAllowedGrantTypeValue,
-            TOpenIdConnectClientTypes,
-            TOpenIdConnectClientConsentTypes,
-            TOpenIdConnectAuthorizationStatus,
-            TOpenIdConnectAuthorizationType,
-            TOpenIdConnectAuthorizationScope,
-            TOpenIdConnectIdentityResource,
-            TOpenIdConnectToken,
-            TOpenIdConnectTokenStatus,
-            TOpenIdConnectTokenType,
-            TOpenIdConnectScopeResource,
-            TOpenIdConnectResource,
-            TOpenIdConnectScope>(this OpenIddictCoreBuilder builder)
-            where TClientManager : EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
-            where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
-            where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
-            where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
-            where TAllowedGrantTypeValue : struct, IConvertible
-            where TOpenIdConnectClientTypes : struct, IConvertible
-            where TOpenIdConnectClientConsentTypes : struct, IConvertible
-            where TOpenIdConnectAuthorizationStatus : struct, IConvertible
-            where TOpenIdConnectAuthorizationType : struct, IConvertible
-            where TOpenIdConnectAuthorizationScope : DynamicEntity, IOpenIdConnectAuthorizationScope<TOpenIdConnectIdentityResource>, new()
-            where TOpenIdConnectIdentityResource : DynamicEntity, IOpenIdConnectIdentityResource
-            where TOpenIdConnectToken : DynamicEntity, IOpenIdConnectToken<TOpenIdConnectClient, TOpenIdConnectAuthorization, TOpenIdConnectTokenStatus, TOpenIdConnectTokenType>
-            where TOpenIdConnectTokenStatus : struct, IConvertible
-            where TOpenIdConnectTokenType : struct, IConvertible
-              where TOpenIdConnectScopeResource : DynamicEntity, IOpenIdConnectScopeResource<TOpenIdConnectResource, TOpenIdConnectIdentityResource>, new()
-            where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource
-            where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
-            where TContext : DynamicContext
+        /// <summary>
+        /// Registers the Entity Framework Core stores services in the DI container and
+        /// configures OpenIddict to use the Entity Framework Core entities by default.
+        /// </summary>
+        /// <param name="builder">The services builder used by OpenIddict to register new services.</param>
+        /// <remarks>This extension can be safely called multiple times.</remarks>
+        /// <returns>The <see cref="OpenIddictEAVFrameworkBuilder"/>.</returns>
+        public static OpenIddictEAVFrameworkBuilder UseEAVFramework<
+        TContext,
+        TClientManager,
+        TOpenIdConnectAuthorization,
+        TOpenIdConnectClient,
+        TOpenIdConnectSecret,
+        TAllowedGrantType,
+        TAllowedGrantTypeValue,
+        TOpenIdConnectClientTypes,
+        TOpenIdConnectClientConsentTypes,
+        TOpenIdConnectAuthorizationStatus,
+        TOpenIdConnectAuthorizationType,
+        TOpenIdConnectAuthorizationScope,
+        TOpenIdConnectIdentityResource,
+        TOpenIdConnectToken,
+        TOpenIdConnectTokenStatus,
+        TOpenIdConnectTokenType,
+        TOpenIdConnectScopeResource,
+        TOpenIdConnectResource,
+        TOpenIdConnectScope>(this OpenIddictCoreBuilder builder)
+        where TClientManager : EAVApplicationManager<TContext,TOpenIdConnectClient,TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
+        where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
+        where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+        where TOpenIdConnectSecret : DynamicEntity, IOpenIdConnectSecret
+        where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
+        where TAllowedGrantTypeValue : struct, IConvertible
+        where TOpenIdConnectClientTypes : struct, IConvertible
+        where TOpenIdConnectClientConsentTypes : struct, IConvertible
+        where TOpenIdConnectAuthorizationStatus : struct, IConvertible
+        where TOpenIdConnectAuthorizationType : struct, IConvertible
+        where TOpenIdConnectAuthorizationScope : DynamicEntity, IOpenIdConnectAuthorizationScope<TOpenIdConnectIdentityResource>, new()
+        where TOpenIdConnectIdentityResource : DynamicEntity, IOpenIdConnectIdentityResource
+        where TOpenIdConnectToken : DynamicEntity, IOpenIdConnectToken<TOpenIdConnectClient, TOpenIdConnectAuthorization, TOpenIdConnectTokenStatus, TOpenIdConnectTokenType>
+        where TOpenIdConnectTokenStatus : struct, IConvertible
+        where TOpenIdConnectTokenType : struct, IConvertible
+          where TOpenIdConnectScopeResource : DynamicEntity, IOpenIdConnectScopeResource<TOpenIdConnectResource, TOpenIdConnectIdentityResource>, new()
+        where TOpenIdConnectResource : DynamicEntity, IOpenIdConnectResource
+        where TOpenIdConnectScope : DynamicEntity, IOpenIdConnectScope<TOpenIdConnectScopeResource>
+        where TContext : DynamicContext
         {
             if (builder is null)
             {
@@ -481,6 +529,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         public static OpenIddictCoreBuilder UseEAVFramework<TContext,
             TOpenIdConnectAuthorization,
             TOpenIdConnectClient,
+            TOpenIdConnectSecret,
             TAllowedGrantType,
             TAllowedGrantTypeValue,
             TOpenIdConnectClientTypes,
@@ -496,8 +545,9 @@ namespace EAVFW.Extensions.OIDCIdentity
             TOpenIdConnectResource,
             TOpenIdConnectScope>(
             this OpenIddictCoreBuilder builder, Action<OpenIddictEAVFrameworkBuilder> configuration)
-            where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient,  TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
+            where TOpenIdConnectAuthorization : DynamicEntity, IOpenIdConnectAuthorization<TOpenIdConnectClient, TOpenIdConnectAuthorizationStatus, TOpenIdConnectAuthorizationType>
             where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+            where TOpenIdConnectSecret : DynamicEntity, IOpenIdConnectSecret
             where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
             where TAllowedGrantTypeValue : struct, IConvertible
             where TOpenIdConnectClientTypes : struct, IConvertible
@@ -528,6 +578,7 @@ namespace EAVFW.Extensions.OIDCIdentity
             configuration(builder.UseEAVFramework<TContext,
                 TOpenIdConnectAuthorization,
                 TOpenIdConnectClient,
+                TOpenIdConnectSecret,
                 TAllowedGrantType,
                 TAllowedGrantTypeValue,
                 TOpenIdConnectClientTypes,

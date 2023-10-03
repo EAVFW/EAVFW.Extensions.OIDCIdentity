@@ -135,6 +135,7 @@
 						"Logo Uri": "[variables('PrimaryInformation')]",
 						"Protocol Type": "[variables('PrimaryInformation')]",
 						"Require Client Secret": "[variables('PrimaryInformation')]",
+						"Client Secret": "[variables('PrimaryInformation')]",
 						"Require Consent": "[variables('PrimaryInformation')]",
 						"Allow Remember Consent": "[variables('PrimaryInformation')]",
 						"Allowed Grant Types": "[variables('PrimaryInformation')]",
@@ -304,7 +305,7 @@
 						"Client Id": {},
 						"Name": {},
 						"Client Uri": {},
-						"Status Reason": {},
+						"Status": {},
 						"Require Consent": {}
 					}
 				}

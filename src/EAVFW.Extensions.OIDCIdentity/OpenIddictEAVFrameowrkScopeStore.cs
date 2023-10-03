@@ -103,7 +103,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 
 
 
-        private IQueryable<TOpenIdConnectScope> Loader => Scopes.Include(x => x.OpenIdConnectScopeResources).ThenInclude(resource => resource.Resource).AsTracking();
+        private IQueryable<TOpenIdConnectScope> Loader => Scopes.Include(x => x.OpenIdConnectScopeResources).AsTracking();
 
         /// <inheritdoc/>
         public virtual async ValueTask<long> CountAsync(CancellationToken cancellationToken)

@@ -14,15 +14,17 @@ using static OpenIddict.Server.OpenIddictServerEvents;
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
-    public class TokenHandler<TClientManager, TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> : IOpenIddictServerHandler<HandleTokenRequestContext>
+    public class TokenHandler<TContext,TClientManager, TOpenIdConnectClient, TOpenIdConnectSecret,TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> : IOpenIddictServerHandler<HandleTokenRequestContext>
+        where TContext : DynamicContext
         where TOpenIdConnectClient : DynamicEntity, IOpenIdConnectClient<TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes>
+        where TOpenIdConnectSecret : DynamicEntity, IOpenIdConnectSecret    
         where TOpenIdConnectClientTypes : struct, IConvertible
         where TOpenIdConnectClientConsentTypes : struct, IConvertible
         where TAllowedGrantTypeValue : struct, IConvertible
         where TAllowedGrantType : DynamicEntity, IAllowedGrantType<TAllowedGrantTypeValue>
-        where TClientManager : EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
+        where TClientManager : EAVApplicationManager<TContext,TOpenIdConnectClient, TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>
     {
-        private readonly EAVApplicationManager<TOpenIdConnectClient, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> _applicationManager;
+        private readonly EAVApplicationManager<TContext,TOpenIdConnectClient, TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> _applicationManager;
         private readonly IOpenIddictScopeManager _scopeManager;
         public TokenHandler(TClientManager applicationManager, IOpenIddictScopeManager scopeManager)
         {
@@ -44,10 +46,10 @@ namespace EAVFW.Extensions.OIDCIdentity
                 TokenValidationParameters.DefaultAuthenticationType,
                 Claims.Name, Claims.Role);
             // Use the client_id as the subject identifier.
-            identity.AddClaim(Claims.Subject, await _applicationManager.GetIdAsync(application),
-                Destinations.AccessToken, Destinations.IdentityToken);
-            identity.AddClaim(Claims.Name, await _applicationManager.GetDisplayNameAsync(application),
-                Destinations.AccessToken, Destinations.IdentityToken);
+            identity.AddClaim(new Claim(Claims.Subject, await _applicationManager.GetIdAsync(application))
+                .SetDestinations(  Destinations.AccessToken, Destinations.IdentityToken));
+            identity.AddClaim(new Claim(Claims.Name, await _applicationManager.GetDisplayNameAsync(application))
+                .SetDestinations(Destinations.AccessToken, Destinations.IdentityToken));
             // Note: In the original OAuth 2.0 specification, the client credentials grant
             // doesn't return an identity token, which is an OpenID Connect concept.
             //
