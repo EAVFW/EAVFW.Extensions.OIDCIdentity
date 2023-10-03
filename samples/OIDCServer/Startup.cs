@@ -55,7 +55,7 @@ namespace OIDCServer
                 };
 
 
-                o.PublisherPrefix = "MC";
+                o.Schema = "MC";
                 o.EnableDynamicMigrations = true;
                 o.Namespace = "Kjeldager.Models";
                 o.DTOAssembly = typeof(Server).Assembly;
