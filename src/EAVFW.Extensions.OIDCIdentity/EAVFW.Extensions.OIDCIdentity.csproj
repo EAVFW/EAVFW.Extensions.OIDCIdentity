@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<LangVersion>9.0</LangVersion>
@@ -36,11 +36,11 @@
 		<PackageReference Include="OpenIddict.Server" Version="4.8.0" />
 		<PackageReference Include="OpenIddict.Server.AspNetCore" Version="4.8.0" />
 	</ItemGroup>
-	<ItemGroup Condition="$(RemoteEAVFramework) == 'false'">
+	<ItemGroup Condition="$(UseEAVFromNuget) == 'false'">
 		<ProjectReference Include="$(LocalEAVFrameworkPath)\src\EAVFramework.csproj" />
 	</ItemGroup>
-	<ItemGroup Condition="$(RemoteEAVFramework) != 'false'">
-    <PackageReference Include="EAVFramework" Version="2.3.1" />
+	<ItemGroup Condition="$(UseEAVFromNuget) != 'false'">
+    <PackageReference Include="EAVFramework" Version="$(EAVFrameworkVersion)" />
 	</ItemGroup>
 
 
