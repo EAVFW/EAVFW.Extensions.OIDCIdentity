@@ -245,7 +245,7 @@ namespace EAVFW.Extensions.OIDCIdentity
                              options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
                      }
 
-
+                    
                      options.RequireProofKeyForCodeExchange();
 
                      options.UseAspNetCore()

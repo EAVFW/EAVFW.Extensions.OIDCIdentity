@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<LangVersion>9.0</LangVersion>
@@ -40,7 +40,7 @@
 		<ProjectReference Include="$(LocalEAVFrameworkPath)\src\EAVFramework.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="$(UseEAVFromNuget) != 'false'">
-    <PackageReference Include="EAVFramework" Version="4.0.2" />
+    <PackageReference Include="EAVFramework" Version="$(EAVFrameworkVersion)" />
 	</ItemGroup>
 
 
