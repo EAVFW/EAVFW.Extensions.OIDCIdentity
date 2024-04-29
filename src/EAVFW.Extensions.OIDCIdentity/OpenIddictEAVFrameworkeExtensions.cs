@@ -27,6 +27,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         public bool UseDevelopmentCertificates { get; set; }
         public string SigningCertificateThumbprint { get; set; }
         public string EncryptionCertificateThumbprint { get; set; }
+        public string Authority { get; set; }
     }
     /// <summary>
     /// Exposes extensions allowing to register the OpenIddict Entity Framework Core services.
@@ -245,6 +246,8 @@ namespace EAVFW.Extensions.OIDCIdentity
                              options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
                      }
 
+                     if (!string.IsNullOrEmpty(eavoptions.Authority))
+                         options.SetIssuer(eavoptions.Authority);
                     
                      options.RequireProofKeyForCodeExchange();
 
