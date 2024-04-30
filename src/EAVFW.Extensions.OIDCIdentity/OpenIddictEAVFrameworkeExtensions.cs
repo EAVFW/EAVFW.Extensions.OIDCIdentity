@@ -25,10 +25,10 @@ namespace EAVFW.Extensions.OIDCIdentity
 {
     public class EAVOpenIdConnectKeyVaultOptions
     {
-        public string ManagedIdentityUserId { get; internal set; }
-        public string VaultName { get; internal set; }
-        public string SigningCertificateName { get; internal set; }
-        public string EncryptionCertificateName { get; internal set; }
+        public string ManagedIdentityUserId { get; set; }
+        public string VaultName { get; set; }
+        public string SigningCertificateName { get; set; }
+        public string EncryptionCertificateName { get; set; }
     }
     public class EAVOpenIdConnectOptions
     {
