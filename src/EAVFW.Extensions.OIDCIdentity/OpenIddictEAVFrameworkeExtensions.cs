@@ -1,5 +1,6 @@
 using EAVFramework;
 using EAVFW.Extensions.OIDCIdentity.Plugins;
+using EAVFW.Extensions.OIDCIdentity.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -22,12 +23,20 @@ using static OpenIddict.Server.OpenIddictServerEvents;
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
+    public class EAVOpenIdConnectKeyVaultOptions
+    {
+        public string ManagedIdentityUserId { get; internal set; }
+        public string VaultName { get; internal set; }
+        public string SigningCertificateName { get; internal set; }
+        public string EncryptionCertificateName { get; internal set; }
+    }
     public class EAVOpenIdConnectOptions
     {
         public bool UseDevelopmentCertificates { get; set; }
         public string SigningCertificateThumbprint { get; set; }
         public string EncryptionCertificateThumbprint { get; set; }
         public string Authority { get; set; }
+        public EAVOpenIdConnectKeyVaultOptions KeyVaultCertificates { get;  set; }
     }
     /// <summary>
     /// Exposes extensions allowing to register the OpenIddict Entity Framework Core services.
@@ -226,7 +235,7 @@ namespace EAVFW.Extensions.OIDCIdentity
                          .AddDevelopmentEncryptionCertificate()
                          .AddDevelopmentSigningCertificate();
                      }
-
+                    
                      if (!string.IsNullOrEmpty(eavoptions.EncryptionCertificateThumbprint))
                      {
                          if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -236,6 +245,7 @@ namespace EAVFW.Extensions.OIDCIdentity
                          else
                              options.AddEncryptionCertificate(eavoptions.EncryptionCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
                      }
+                     
                      if (!string.IsNullOrEmpty(eavoptions.SigningCertificateThumbprint))
                      {
                          if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -245,6 +255,28 @@ namespace EAVFW.Extensions.OIDCIdentity
                          else
                              options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
                      }
+
+                     if (!string.IsNullOrEmpty(eavoptions.KeyVaultCertificates?.ManagedIdentityUserId))
+                     {
+                         foreach(var signingCertificate in 
+                            KeyvaultCertificateProvider.LoadCertificateVerisons(
+                                eavoptions.KeyVaultCertificates?.ManagedIdentityUserId,
+                                eavoptions.KeyVaultCertificates.VaultName,
+                                eavoptions.KeyVaultCertificates.SigningCertificateName))
+                         {
+                             options.AddSigningCertificate(signingCertificate);
+                         }
+
+                         foreach (var encryptionCertificate in
+                          KeyvaultCertificateProvider.LoadCertificateVerisons(
+                              eavoptions.KeyVaultCertificates?.ManagedIdentityUserId,
+                              eavoptions.KeyVaultCertificates.VaultName,
+                              eavoptions.KeyVaultCertificates.EncryptionCertificateName))
+                         {
+                             options.AddEncryptionCertificate(encryptionCertificate);
+                         }
+                     }
+
 
                      if (!string.IsNullOrEmpty(eavoptions.Authority))
                          options.SetIssuer(eavoptions.Authority);
