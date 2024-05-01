@@ -39,6 +39,8 @@ namespace EAVFW.Extensions.OIDCIdentity
         public string EncryptionCertificateThumbprint { get; set; }
         public string Authority { get; set; }
         public EAVOpenIdConnectKeyVaultOptions KeyVaultCertificates { get;  set; }
+
+        public Action<OpenIddictServerBuilder> OnConfigureOpenIddict { get; set; }
     }
     /// <summary>
     /// Exposes extensions allowing to register the OpenIddict Entity Framework Core services.
@@ -281,7 +283,17 @@ namespace EAVFW.Extensions.OIDCIdentity
 
 
                      if (!string.IsNullOrEmpty(eavoptions.Authority))
+                     {
                          options.SetIssuer(eavoptions.Authority);
+                         options.SetCryptographyEndpointUris($"{eavoptions.Authority.Trim('/')}/.well-known/jwks");
+                         options.SetAuthorizationEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/authorize");
+                         options.SetTokenEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/token");
+                         options.SetUserinfoEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/userinfo");
+                         options.SetLogoutEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/logout");
+                         options.SetDeviceEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/device");
+                        
+                     }
+                   
                     
                      options.RequireProofKeyForCodeExchange();
 
@@ -292,6 +304,8 @@ namespace EAVFW.Extensions.OIDCIdentity
                      .EnableUserinfoEndpointPassthrough()
                      .EnableVerificationEndpointPassthrough()
                      .DisableTransportSecurityRequirement();
+
+                     eavoptions?.OnConfigureOpenIddict(options);
 
                      options.AddEventHandler<HandleTokenRequestContext>(c => c.UseScopedHandler<TokenHandler<TContext,TClientManager, TOpenIdConnectClient, TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>>());
                  });
