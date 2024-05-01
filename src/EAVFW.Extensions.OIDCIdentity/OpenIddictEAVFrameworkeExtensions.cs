@@ -284,13 +284,14 @@ namespace EAVFW.Extensions.OIDCIdentity
 
                      if (!string.IsNullOrEmpty(eavoptions.Authority))
                      {
+                       
                          options.SetIssuer(eavoptions.Authority);
-                         options.SetCryptographyEndpointUris($"{eavoptions.Authority.Trim('/')}/.well-known/jwks");
-                         options.SetAuthorizationEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/authorize");
-                         options.SetTokenEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/token");
-                         options.SetUserinfoEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/userinfo");
-                         options.SetLogoutEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/logout");
-                         options.SetDeviceEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/device");
+                         //options.SetCryptographyEndpointUris($"{eavoptions.Authority.Trim('/')}/.well-known/jwks");
+                         //options.SetAuthorizationEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/authorize");
+                         //options.SetTokenEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/token");
+                         //options.SetUserinfoEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/userinfo");
+                         //options.SetLogoutEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/logout");
+                         //options.SetDeviceEndpointUris($"{eavoptions.Authority.Trim('/')}/connect/device");
                         
                      }
                    
