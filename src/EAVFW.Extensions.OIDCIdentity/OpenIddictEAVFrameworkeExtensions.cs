@@ -1,3 +1,4 @@
+using Azure.Core;
 using EAVFramework;
 using EAVFW.Extensions.OIDCIdentity.Plugins;
 using EAVFW.Extensions.OIDCIdentity.Services;
@@ -29,6 +30,7 @@ namespace EAVFW.Extensions.OIDCIdentity
         public string VaultName { get; set; }
         public string SigningCertificateName { get; set; }
         public string EncryptionCertificateName { get; set; }
+        public TokenCredential Token { get;  set; }
     }
     public class EAVOpenIdConnectOptions
     {
@@ -212,7 +214,7 @@ namespace EAVFW.Extensions.OIDCIdentity
 
                  }).AddServer(options =>
                  {
-
+                     
                      options
                      .SetAuthorizationEndpointUris("/connect/authorize")
                      .SetDeviceEndpointUris("/connect/device")
@@ -256,13 +258,13 @@ namespace EAVFW.Extensions.OIDCIdentity
                              options.AddSigningCertificate(eavoptions.SigningCertificateThumbprint, System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.CurrentUser);
                      }
 
-                     if (!string.IsNullOrEmpty(eavoptions.KeyVaultCertificates?.ManagedIdentityUserId))
+                     if (!string.IsNullOrEmpty(eavoptions.KeyVaultCertificates?.VaultName))
                      {
                          foreach(var signingCertificate in 
                             KeyvaultCertificateProvider.LoadCertificateVerisons(
                                 eavoptions.KeyVaultCertificates?.ManagedIdentityUserId,
                                 eavoptions.KeyVaultCertificates.VaultName,
-                                eavoptions.KeyVaultCertificates.SigningCertificateName))
+                                eavoptions.KeyVaultCertificates.SigningCertificateName, eavoptions.KeyVaultCertificates.Token))
                          {
                              options.AddSigningCertificate(signingCertificate);
                          }
@@ -271,7 +273,7 @@ namespace EAVFW.Extensions.OIDCIdentity
                           KeyvaultCertificateProvider.LoadCertificateVerisons(
                               eavoptions.KeyVaultCertificates?.ManagedIdentityUserId,
                               eavoptions.KeyVaultCertificates.VaultName,
-                              eavoptions.KeyVaultCertificates.EncryptionCertificateName))
+                              eavoptions.KeyVaultCertificates.EncryptionCertificateName, eavoptions.KeyVaultCertificates.Token))
                          {
                              options.AddEncryptionCertificate(encryptionCertificate);
                          }
