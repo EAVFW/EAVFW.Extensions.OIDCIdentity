@@ -305,7 +305,7 @@ namespace EAVFW.Extensions.OIDCIdentity
                      .EnableVerificationEndpointPassthrough()
                      .DisableTransportSecurityRequirement();
 
-                     eavoptions?.OnConfigureOpenIddict(options);
+                     eavoptions?.OnConfigureOpenIddict?.Invoke(options);
 
                      options.AddEventHandler<HandleTokenRequestContext>(c => c.UseScopedHandler<TokenHandler<TContext,TClientManager, TOpenIdConnectClient, TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue>>());
                  });
