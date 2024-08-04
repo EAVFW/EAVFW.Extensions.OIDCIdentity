@@ -18,12 +18,12 @@ namespace EAVFW.Extensions.OIDCIdentity.Services
 
 
         public static IEnumerable<X509Certificate2> LoadCertificateVerisons(string managedIdentityUserid,
-    string keyVaultName,
+    string keyVaultNameOrUrl,
     string certificateName, TokenCredential token=null)
         {
             token ??= new ManagedIdentityCredential(managedIdentityUserid);
 
-            var keyVaultUrl = new Uri($"https://{keyVaultName}.vault.azure.net");
+            var keyVaultUrl = new Uri(keyVaultNameOrUrl.StartsWith("https://") ? keyVaultNameOrUrl:  $"https://{keyVaultNameOrUrl}.vault.azure.net");
             var certificateClient = new CertificateClient(keyVaultUrl,token);
             var secretClient = new SecretClient(keyVaultUrl, token);
 
