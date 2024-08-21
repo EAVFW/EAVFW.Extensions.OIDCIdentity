@@ -1,5 +1,6 @@
 using EAVFramework;
 using EAVFramework.Endpoints;
+using EAVFramework.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -22,6 +23,24 @@ using System.Threading.Tasks;
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
+
+    //[ConstraintMapping(EntityKey = "OpenId Connect Client", ConstraintName = nameof(TOpenIdConnectClient))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Authorization", ConstraintName = nameof(TOpenIdConnectAuthorization))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Token", ConstraintName = nameof(TOpenIdConnectToken))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Token", AttributeKey = "Status", ConstraintName = nameof(TOpenIdConnectTokenStatus))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Token", AttributeKey = "Type", ConstraintName = nameof(TOpenIdConnectTokenType))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Authorization", AttributeKey = "Status", ConstraintName = nameof(TOpenIdConnectAuthorizationStatus))]
+    //[ConstraintMapping(EntityKey = "Allowed Grant Type", ConstraintName = nameof(TAllowedGrantType))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Authorization Scope", ConstraintName = nameof(TOpenIdConnectAuthorizationScope))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Client", AttributeKey = "Consent Type", ConstraintName = nameof(TOpenIdConnectClientConsentTypes))]
+    //[ConstraintMapping(EntityKey = "Allowed Grant Type", AttributeKey = "Allowed Grant Type Value", ConstraintName = nameof(TAllowedGrantTypeValue))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Scope", ConstraintName = nameof(TOpenIdConnectScope))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Scope Resource", ConstraintName = nameof(TOpenIdConnectScopeResource))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Resource", ConstraintName = nameof(TOpenIdConnectResource))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Client", AttributeKey = "Type", ConstraintName = nameof(TOpenIdConnectClientTypes))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Identity Resource", ConstraintName = nameof(TOpenIdConnectIdentityResource))]
+    //[ConstraintMapping(EntityKey = "OpenId Connect Authorization", AttributeKey = "Type", ConstraintName = nameof(TOpenIdConnectAuthorizationType))]
+
     public class OpenIddictEAVFrameowrkScopeStore<
         TContext,
         TOpenIdConnectScope,

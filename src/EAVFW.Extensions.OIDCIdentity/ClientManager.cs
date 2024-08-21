@@ -2,6 +2,7 @@
 
 using EAVFramework;
 using EAVFramework.Endpoints;
+using EAVFramework.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,10 +17,15 @@ using System.Threading.Tasks;
 
 namespace EAVFW.Extensions.OIDCIdentity
 {
-    public interface IEAVApplicationManager : IOpenIddictApplicationManager
-    {
+    //public interface IEAVApplicationManager : IOpenIddictApplicationManager
+    //{
 
-    }
+    //}
+
+//    [ConstraintMapping(ConstraintName = nameof(TAllowedGrantTypeValue), EntityKey = "Allowed Grant Type", AttributeKey = "Allowed Grant Type Value")]
+
+//    [ConstraintMapping(ConstraintName = nameof(TOpenIdConnectClientConsentTypes), EntityKey = "OpenId Connect Client", AttributeKey = "Consent Type")]
+//    [ConstraintMapping(ConstraintName = nameof(TOpenIdConnectClientTypes), EntityKey = "OpenId Connect Client", AttributeKey ="Type")]
     public class EAVApplicationManager<TContext,TOpenIdConnectClient, TOpenIdConnectSecret, TAllowedGrantType, TOpenIdConnectClientTypes, TOpenIdConnectClientConsentTypes, TAllowedGrantTypeValue> 
         : OpenIddictApplicationManager<TOpenIdConnectClient>
         where TContext : DynamicContext
